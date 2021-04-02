@@ -5,10 +5,12 @@ from django.shortcuts import render
 from user import models
 from rest_framework.views import APIView
 from handwritingapi.utils.response import APIResponse
+from handwritingapi.utils.logger import logger
 
 
 class TestView(APIView):
     def get(self, request, *args, **kwargs):
+        # logger.info('xxxxx')
         dic = {'name': 'lqa'}
-        print(dic['age'])
-        return
+        print('xxxxx')
+        return APIResponse(headers={'Access-Control-Allow-Origin':'*'})
