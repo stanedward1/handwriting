@@ -23,7 +23,7 @@
                             clearable
                             show-password>
                     </el-input>
-                    <el-button type="primary">登录</el-button>
+                    <el-button type="primary" @click="login_password">登录</el-button>
                 </el-form>
                 <el-form v-if="login_method === 'is_sms'">
                     <el-input
@@ -42,7 +42,7 @@
                             <span class="sms" @click="send_sms">{{ sms_interval }}</span>
                         </template>
                     </el-input>
-                    <el-button type="primary">登录</el-button>
+                    <el-button type="primary" @click="login_password">登录</el-button>
                 </el-form>
                 <div class="foot">
                     <span @click="go_register">立即注册</span>
@@ -53,63 +53,92 @@
 </template>
 
 <script>
-    export default {
-        name: "Login",
-        data() {
-            return {
-                username: '',
-                password: '',
-                mobile: '',
-                sms: '',
-                login_method: 'is_pwd',
-                sms_interval: '获取验证码',
-                is_send: false,
-            }
-        },
-        methods: {
-            close_login() {
-                this.$emit('close')
-            },
-            go_register() {
-                this.$emit('go')
-            },
-            change_login_method(method) {
-                this.login_method = method;
-            },
-            check_mobile() {
-                if (!this.mobile) return;
-                if (!this.mobile.match(/^1[3-9][0-9]{9}$/)) {
-                    this.$message({
-                        message: '手机号有误',
-                        type: 'warning',
-                        duration: 1000,
-                        onClose: () => {
-                            this.mobile = '';
-                        }
-                    });
-                    return false;
-                }
-                this.is_send = true;
-            },
-            send_sms() {
-
-                if (!this.is_send) return;
-                this.is_send = false;
-                let sms_interval_time = 60;
-                this.sms_interval = "发送中...";
-                let timer = setInterval(() => {
-                    if (sms_interval_time <= 1) {
-                        clearInterval(timer);
-                        this.sms_interval = "获取验证码";
-                        this.is_send = true; // 重新回复点击发送功能的条件
-                    } else {
-                        sms_interval_time -= 1;
-                        this.sms_interval = `${sms_interval_time}秒后再发`;
-                    }
-                }, 1000);
-            }
-        }
+export default {
+  name: 'Login',
+  data () {
+    return {
+      username: '',
+      password: '',
+      mobile: '',
+      sms: '',
+      login_method: 'is_pwd',
+      sms_interval: '获取验证码',
+      is_send: false
     }
+  },
+  methods: {
+    close_login () {
+      this.$emit('close')
+    },
+    go_register () {
+      this.$emit('go')
+    },
+    change_login_method (method) {
+      this.login_method = method
+    },
+    check_mobile () {
+      if (!this.mobile) return
+      if (!this.mobile.match(/^1[3-9][0-9]{9}$/)) {
+        this.$message({
+          message: '手机号有误',
+          type: 'warning',
+          duration: 1000,
+          onClose: () => {
+            this.mobile = ''
+          }
+        })
+        return false
+      }
+      this.is_send = true
+    },
+    send_sms () {
+      if (!this.is_send) return
+      this.is_send = false
+      // eslint-disable-next-line camelcase
+      let sms_interval_time = 60
+      this.sms_interval = '发送中...'
+      let timer = setInterval(() => {
+        // eslint-disable-next-line camelcase
+        if (sms_interval_time <= 1) {
+          clearInterval(timer)
+          this.sms_interval = '获取验证码'
+          this.is_send = true // 重新回复点击发送功能的条件
+        } else {
+          // eslint-disable-next-line camelcase
+          sms_interval_time -= 1
+          // eslint-disable-next-line camelcase
+          this.sms_interval = `${sms_interval_time}秒后再发`
+        }
+      }, 1000)
+    },
+    login_password () {
+      if (this.username && this.password) {
+        // 发送请求
+        this.$axios.post(this.$settings.base_url + '/user/login/', {
+          username: this.username,
+          password: this.password
+        }).then(response => {
+          console.log(response.data)
+          // 把用户信息放到cookie中
+          // this.$cookies.set('key','value','过期时间')
+          // eslint-disable-next-line no-undef
+          this.$cookies.set('token', response.data.token,'33d')
+          this.$cookies.set('username', response.data.username,'33d')
+          // 关闭登陆窗口（子传父）
+          this.$emit('close')
+          // 给父组件，Head传递一个事件，让它从cookie中取出token&username
+          this.$emit('loginsuccess')
+        }).catch(errors => {
+        })
+      } else {
+        this.$message({
+          message: '请输入您的用户名或密码',
+          type: 'warning'
+        })
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>

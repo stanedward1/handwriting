@@ -206,3 +206,10 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'Pragma',
 )
+
+import datetime
+
+JWT_AUTH = {
+    # 过期时间33天
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=33),
+}
