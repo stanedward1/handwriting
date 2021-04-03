@@ -1,14 +1,9 @@
-from django.shortcuts import render
+from rest_framework.mixins import ListModelMixin
+from rest_framework.viewsets import GenericViewSet
 
-# Create your views here.
+from . import models, serializer
+from django.conf import settings
 
-from user import models
-from rest_framework.views import APIView
-from handwritingapi.utils.response import APIResponse
-
-
-class TestView(APIView):
-    def get(self, request, *args, **kwargs):
-        dic = {'name': 'lqa'}
-        print(dic['age'])
-        return
+class BannerView(GenericViewSet, ListModelMixin):
+    queryset = models.Banner.objects.filter(is_delete=False, is_show=True).order_by('display_order')[:settings.BANNER_COUNTER]
+    serializer_class = serializer.BannerModelSerializer
