@@ -8,5 +8,5 @@ urlpatterns = [
     path('home/', include('home.urls')),
 
     # 打开media文件夹的路径
-    re_path('media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_URL}),
+    re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]

@@ -9,6 +9,12 @@ import cookies from 'vue-cookies'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+// 配置全局样式
+import '@/assets/css/global.css'
+// 配置全局自定义设置
+import settings from '@/assets/js/settings'
+Vue.prototype.$settings = settings;
+// 在所有需要与后台交互的组件中：this.$settings.base_url + '再拼接具体后台路由'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
@@ -19,6 +25,7 @@ Vue.prototype.$cookies = cookies
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -1,4 +1,5 @@
 # 开发环境配置
+from .const import *
 import os
 from pathlib import Path
 
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'user',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -204,4 +206,3 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'Pragma',
 )
-
