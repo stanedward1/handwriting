@@ -5,4 +5,7 @@
 # @File    : const.py
 # @Software: PyCharm
 # 首页轮播图个数
-BANNER_COUNTER=3
+BANNER_COUNTER = 3
+
+# 手机验证码缓存的key值
+SMS_CACHE_KEY = 'sms_cache_%(code)s'

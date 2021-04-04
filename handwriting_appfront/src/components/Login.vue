@@ -42,7 +42,7 @@
                             <span class="sms" @click="send_sms">{{ sms_interval }}</span>
                         </template>
                     </el-input>
-                    <el-button type="primary" @click="login_password">登录</el-button>
+                    <el-button type="primary" @click="code_login">登录</el-button>
                 </el-form>
                 <div class="foot">
                     <span @click="go_register">立即注册</span>
@@ -89,6 +89,24 @@ export default {
         })
         return false
       }
+      this.$axios.get(this.$settings.base_url + '/user/check_telephone/', {params: {telephone: this.mobile}})
+        .then(response => {
+          if (response.data.code) {
+            // 手机号存在，允许发送验证码
+            this.is_send = true
+          } else {
+            this.$message({
+              message: '手机号不存在',
+              type: 'warning',
+              duration: 1000,
+              onClose: () => {
+                this.mobile = ''
+              }
+            })
+          }
+        }).catch(error => {
+          console.log(error)
+        })
       this.is_send = true
     },
     send_sms () {
@@ -97,6 +115,18 @@ export default {
       // eslint-disable-next-line camelcase
       let sms_interval_time = 60
       this.sms_interval = '发送中...'
+
+      this.$axios.get(this.$settings.base_url + '/user/send/', {params: {'telephone': this.mobile}})
+        .then(response => {
+          if (response.data.code) {
+            this.$message({
+              message: '发送验证码成功',
+              type: 'success',
+              duration: 1000
+            })
+          }
+        })
+      // 定时器，每隔一秒钟，把数字减一
       let timer = setInterval(() => {
         // eslint-disable-next-line camelcase
         if (sms_interval_time <= 1) {
@@ -122,8 +152,34 @@ export default {
           // 把用户信息放到cookie中
           // this.$cookies.set('key','value','过期时间')
           // eslint-disable-next-line no-undef
-          this.$cookies.set('token', response.data.token,'33d')
-          this.$cookies.set('username', response.data.username,'33d')
+          this.$cookies.set('token', response.data.token, '33d')
+          this.$cookies.set('username', response.data.username, '33d')
+          // 关闭登陆窗口（子传父）
+          this.$emit('close')
+          // 给父组件，Head传递一个事件，让它从cookie中取出token&username
+          this.$emit('loginsuccess')
+        }).catch(errors => {
+        })
+      } else {
+        this.$message({
+          message: '请输入您的用户名或密码',
+          type: 'warning'
+        })
+      }
+    },
+    code_login () {
+      if (this.mobile && this.sms) {
+        // 发送请求
+        this.$axios.post(this.$settings.base_url + '/user/code_login/', {
+          telephone: this.mobile,
+          code: this.sms
+        }).then(response => {
+          console.log(response.data)
+          // 把用户信息放到cookie中
+          // this.$cookies.set('key','value','过期时间')
+          // eslint-disable-next-line no-undef
+          this.$cookies.set('token', response.data.token, '33d')
+          this.$cookies.set('username', response.data.username, '33d')
           // 关闭登陆窗口（子传父）
           this.$emit('close')
           // 给父组件，Head传递一个事件，让它从cookie中取出token&username

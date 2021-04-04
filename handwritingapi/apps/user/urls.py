@@ -11,6 +11,8 @@ from user import views
 
 router = SimpleRouter()
 router.register('', views.LoginView, basename='login')
+router.register('', views.SendSmSView, basename='send')
+router.register('register', views.RegisterView, basename='register')
 urlpatterns = [
     path('', include(router.urls)),
 ]
