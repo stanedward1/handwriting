@@ -30,7 +30,7 @@
                             <span class="sms" @click="send_sms">{{ sms_interval }}</span>
                         </template>
                     </el-input>
-                    <el-button type="primary">注册</el-button>
+                    <el-button type="primary" @click="register">注册</el-button>
                 </el-form>
                 <div class="foot">
                     <span @click="go_login">立即登录</span>
@@ -41,57 +41,133 @@
 </template>
 
 <script>
-    export default {
-        name: "Register",
-        data() {
-            return {
-                mobile: '',
-                password: '',
-                sms: '',
-                sms_interval: '获取验证码',
-                is_send: false,
-            }
-        },
-        methods: {
-            close_register() {
-                this.$emit('close', false)
-            },
-            go_login() {
-                this.$emit('go')
-            },
-            check_mobile() {
-                if (!this.mobile) return;
-                if (!this.mobile.match(/^1[3-9][0-9]{9}$/)) {
-                    this.$message({
-                        message: '手机号有误',
-                        type: 'warning',
-                        duration: 1000,
-                        onClose: () => {
-                            this.mobile = '';
-                        }
-                    });
-                    return false;
-                }
-                this.is_send = true;
-            },
-            send_sms() {
-                if (!this.is_send) return;
-                this.is_send = false;
-                let sms_interval_time = 60;
-                this.sms_interval = "发送中...";
-                let timer = setInterval(() => {
-                    if (sms_interval_time <= 1) {
-                        clearInterval(timer);
-                        this.sms_interval = "获取验证码";
-                        this.is_send = true; // 重新回复点击发送功能的条件
-                    } else {
-                        sms_interval_time -= 1;
-                        this.sms_interval = `${sms_interval_time}秒后再发`;
-                    }
-                }, 1000);
-            }
-        }
+export default {
+  name: 'Register',
+  data () {
+    return {
+      mobile: '',
+      password: '',
+      sms: '',
+      sms_interval: '获取验证码',
+      is_send: false
     }
+  },
+  methods: {
+    close_register () {
+      this.$emit('close', false)
+    },
+    go_login () {
+      this.$emit('go')
+    },
+    check_mobile () {
+      if (!this.mobile) return
+      if (!this.mobile.match(/^1[3-9][0-9]{9}$/)) {
+        this.$message({
+          message: '手机号有误',
+          type: 'warning',
+          duration: 1000,
+          onClose: () => {
+            this.mobile = ''
+          }
+        })
+        return false
+      }
+      this.$axios.get(this.$settings.base_url + '/user/check_telephone/', {params: {telephone: this.mobile}})
+        .then(response => {
+          if (response.data.code) {
+            // 手机号存在，不允许发送验证码
+            this.$message({
+              message: '您已经注册过了，请登录',
+              type: 'warning',
+              duration: 1000,
+              onClose: () => {
+                this.go_login()
+              }
+            })
+          } else {
+            this.is_send = true
+            this.$message({
+              message: '此用户未注册过，欢迎注册此平台',
+              type: 'success',
+              duration: 1000
+            })
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+    },
+    send_sms () {
+      if (!this.is_send) return
+      this.is_send = false
+      // eslint-disable-next-line camelcase
+      let sms_interval_time = 60
+      this.sms_interval = '发送中...'
+
+      this.$axios.get(this.$settings.base_url + '/user/send/', {params: {'telephone': this.mobile}})
+        .then(response => {
+          if (response.data.code) {
+            this.$message({
+              message: '发送验证码成功',
+              type: 'success',
+              duration: 1000
+            })
+          }
+        })
+      // 定时器，每隔一秒钟，把数字减一
+      let timer = setInterval(() => {
+        // eslint-disable-next-line camelcase
+        if (sms_interval_time <= 1) {
+          clearInterval(timer)
+          this.sms_interval = '获取验证码'
+          this.is_send = true // 重新回复点击发送功能的条件
+        } else {
+          // eslint-disable-next-line camelcase
+          sms_interval_time -= 1
+          // eslint-disable-next-line camelcase
+          this.sms_interval = `${sms_interval_time}秒后再发`
+        }
+      }, 1000)
+    },
+    regiser () {
+      if (!this.mobile && this.sms && this.password) {
+        this.$axios.post(this.$settings.base_url + '/user/register/', {
+          telepone: this.mobile,
+          code: this.sms,
+          password: this.password
+        }).then(response => {
+          if (response.data.code) {
+            // 注册成功，提示,然后跳转到登录
+            this.$message({
+              message: '注册成功',
+              type: 'success',
+              duration: 1000,
+              onClose: () => {
+                this.go_login()
+              }
+            })
+          } else {
+            this.$message({
+              message: '未知错误',
+              type: 'error',
+              duration: 1000,
+              onClose: () => {
+                this.mobile = ''
+                this.sms = ''
+                this.password = ''
+              }
+            })
+          }
+        })
+      } else {
+        this.$message({
+          message: '请检查信息是否漏填',
+          type: 'error',
+          duration: 1000
+        })
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>

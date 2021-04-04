@@ -22,13 +22,18 @@
             </ul>
 
             <div class="right-part">
-                <div>
+                <div v-if="!username">
                     <span @click="put_login">登录</span>
                     <span class="line">|</span>
                     <span @click="put_register">注册</span>
-                    <Login v-if="is_login" @close="close_login" @go="put_register" />
-                    <Register v-if="is_register" @close="close_register" @go="put_login" />
                 </div>
+                <div v-else>
+                    <span>{{ username }}</span>
+                    <span class="line">|</span>
+                    <span @click="logout">注销</span>
+                </div>
+                <Login v-if="is_login" @close="close_login" @go="put_register" @loginsuccess="login_success"/>
+                <Register v-if="is_register" @close="close_register" @go="put_login" />
     		    </div>
         </div>
     </div>
@@ -45,6 +50,8 @@
                 url_path: sessionStorage.url_path || '/',
                 is_login:false,
                 is_register: false,
+                token:'',
+                username:''
             }
         },
         methods: {
@@ -68,11 +75,27 @@
             },
             close_register() {
                 this.is_register = false;
+            },
+            login_success(){
+              this.username = this.$cookies.get('username')
+              this.token = this.$cookies.get('token')
+            },
+            logout(){
+              //清楚cookie
+              this.$cookies.remove('token')
+              this.$cookies.remove('usrname')
+              //将变量值变为空
+              this.username=''
+              this.token=''
             }
         },
         created() {
             sessionStorage.url_path = this.$route.path;
             this.url_path = this.$route.path;
+
+            // 当页面一创建，就从cookie中取token&username
+            this.username = this.$cookies.get('username')
+            this.token = this.$cookies.get('token')
         },
         components:{
           Login,
