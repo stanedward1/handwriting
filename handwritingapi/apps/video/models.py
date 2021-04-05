@@ -19,14 +19,34 @@ class VideoCategory(BaseModel):
 
 class Video(BaseModel):
     """视频教程"""
-    video_type = (
-        (0, '楷书'),
-        (1, '行书'),
-        (2, '隶书')
-    )
     name = models.CharField(max_length=128, verbose_name="视频名称")
     video_img = models.ImageField(upload_to="video", max_length=255, verbose_name="封面图片", blank=True, null=True)
-    video_type = models.SmallIntegerField(choices=video_type, default=0, verbose_name="视频类型")
+    brief = models.TextField(max_length=2048, verbose_name="详情介绍", null=True, blank=True)
+    pub_date = models.DateField(verbose_name="发布日期", auto_now_add=True)
+    attachment_path = models.FileField(upload_to="attachment", max_length=128, verbose_name="附件路径", blank=True,
+                                       null=True)
+    video_category = models.ForeignKey("VideoCategory", on_delete=models.SET_NULL, db_constraint=False, null=True,
+                                       blank=True,
+                                       verbose_name="视频分类")
+    students = models.IntegerField(verbose_name="学习人数", default=0)
+    sections = models.IntegerField(verbose_name="总课时数量", default=0)
+    pub_sections = models.IntegerField(verbose_name="视频更新数量", default=0)
+    organization = models.ForeignKey("Organization", on_delete=models.DO_NOTHING, null=True, blank=True,
+                                     verbose_name="机构或个人名称")
+
+    class Meta:
+        db_table = "video_video"
+        verbose_name = "视频"
+        verbose_name_plural = "视频"
+
+    def __str__(self):
+        return self.name
+
+
+class CultureVideo(BaseModel):
+    """文化趣事视频"""
+    name = models.CharField(max_length=128, verbose_name="文化趣事视频名称")
+    video_img = models.ImageField(upload_to="video", max_length=255, verbose_name="封面图片", blank=True, null=True)
     brief = models.TextField(max_length=2048, verbose_name="详情介绍", null=True, blank=True)
     pub_date = models.DateField(verbose_name="发布日期", auto_now_add=True)
     attachment_path = models.FileField(upload_to="attachment", max_length=128, verbose_name="附件路径", blank=True,
@@ -35,16 +55,16 @@ class Video(BaseModel):
     video_category = models.ForeignKey("VideoCategory", on_delete=models.SET_NULL, db_constraint=False, null=True,
                                        blank=True,
                                        verbose_name="视频分类")
-    students = models.IntegerField(verbose_name="观看/学习人数", default=0)
+    students = models.IntegerField(verbose_name="观看人数", default=0)
     sections = models.IntegerField(verbose_name="总课时数量", default=0)
     pub_sections = models.IntegerField(verbose_name="视频更新数量", default=0)
     organization = models.ForeignKey("Organization", on_delete=models.DO_NOTHING, null=True, blank=True,
                                      verbose_name="机构或个人名称")
 
     class Meta:
-        db_table = "video_video"
-        verbose_name = "视频名称"
-        verbose_name_plural = "视频名称"
+        db_table = "video_culture"
+        verbose_name = "文化趣事视频名称"
+        verbose_name_plural = "文化趣事视频名称"
 
     def __str__(self):
         return self.name
@@ -58,7 +78,7 @@ class Organization(BaseModel):
     brief = models.TextField(max_length=1024, verbose_name="机构或个人描述")
 
     class Meta:
-        db_table = "organization"
+        db_table = "video_organization"
         verbose_name = "机构或个人名称"
         verbose_name_plural = verbose_name
 

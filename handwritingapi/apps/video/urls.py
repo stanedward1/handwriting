@@ -7,12 +7,11 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
-from user import views
+from video import views
 
-# router = SimpleRouter()
-# router.register('', views.LoginView, basename='login')
-# router.register('', views.SendSmSView, basename='send')
-# router.register('register', views.RegisterView, basename='register')
+router = SimpleRouter()
+router.register('categories', views.VideoCategoryView, basename='categories')
+
 urlpatterns = [
-    # path('', include(router.urls)),
+    path('', include(router.urls)),
 ]

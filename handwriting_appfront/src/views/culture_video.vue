@@ -4,7 +4,7 @@
 
 <script>
 export default {
-name: "culture_course"
+  name: 'culture_course'
 }
 </script>
 
