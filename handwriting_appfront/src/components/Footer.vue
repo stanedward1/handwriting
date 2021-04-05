@@ -8,14 +8,14 @@
             <li>意见反馈</li>
             <li>新手指南</li>
         </ul>
-        <p>Copyright © luffycity.com版权所有 | 京ICP备17072161号-1</p>
+        <p>Copyright © https://github.com/stanedward1版权所有</p>
     </div>
 </template>
 
 <script>
-    export default {
-        name: "Footer"
-    }
+export default {
+  name: 'Footer'
+}
 </script>
 
 <style scoped>
