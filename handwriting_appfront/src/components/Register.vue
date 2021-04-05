@@ -30,7 +30,7 @@
                             <span class="sms" @click="send_sms">{{ sms_interval }}</span>
                         </template>
                     </el-input>
-                    <el-button type="primary" @click="register">注册</el-button>
+                    <el-button type="primary" @click="go_regiser">注册</el-button>
                 </el-form>
                 <div class="foot">
                     <span @click="go_login">立即登录</span>
@@ -128,10 +128,10 @@ export default {
         }
       }, 1000)
     },
-    regiser () {
-      if (!this.mobile && this.sms && this.password) {
+    go_regiser () {
+      if (this.mobile && this.sms && this.password) {
         this.$axios.post(this.$settings.base_url + '/user/register/', {
-          telepone: this.mobile,
+          telephone: this.mobile,
           code: this.sms,
           password: this.password
         }).then(response => {

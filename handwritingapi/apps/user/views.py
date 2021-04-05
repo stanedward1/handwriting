@@ -56,6 +56,7 @@ class SendSmSView(ViewSet):
         if not re.match('^1[3-9][0-9]{9}', telephone):
             return APIResponse(code=0, msg='手机号码不合法哦')
         code = tencent_sms.get_code()
+        code = 1234
         result = send_code(telephone, code, 5)
         cache.set(telephone, code, 600)
         if result:
@@ -67,3 +68,8 @@ class SendSmSView(ViewSet):
 class RegisterView(GenericViewSet, CreateModelMixin):
     queryset = models.User.objects.all()
     serializer_class = serializer.UserRegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        username = response.data.get('username')
+        return APIResponse(code=1, msg='注册成功', username=username)
