@@ -8,16 +8,16 @@
 </template>
 
 <script>
-    import Header from '../components/Header'
-    import Footer from '../components/Footer'
-    import Banner from '../components/Banner'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import Banner from '../components/Banner'
 
-    export default {
-        name: "Home",
-        components: {
-            Header,
-            Footer,
-            Banner,
-        }
-    }
+export default {
+  name: 'Home',
+  components: {
+    Header,
+    Footer,
+    Banner
+  }
+}
 </script>

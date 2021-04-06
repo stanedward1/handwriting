@@ -11,10 +11,10 @@
                     </router-link>
                 </li>
                 <li class="ele">
-                    <span @click="goPage('/handwriting_course')" :class="{active: url_path === '/handwriting-course'}">书法课</span>
+                    <span @click="goPage('/handwriting_video')" :class="{active: url_path === '/handwriting_video'}">书法课</span>
                 </li>
                 <li class="ele">
-                    <span @click="goPage('/culture_course')" :class="{active: url_path === '/culture-course'}">文化趣事课</span>
+                    <span @click="goPage('/culture_video')" :class="{active: url_path === '/culture_video'}">文化趣事课</span>
                 </li>
                 <li class="ele">
                     <span @click="goPage('/mall')" :class="{active: url_path === '/mall'}">商城</span>
