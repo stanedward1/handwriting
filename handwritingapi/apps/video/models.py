@@ -39,6 +39,23 @@ class Video(BaseModel):
         verbose_name = "视频"
         verbose_name_plural = "视频"
 
+    @property
+    def video_section(self):
+        ll = []
+        # 根据课程取出所有章节
+        video_chapter_list = self.videochapters.all()
+        for video_chapter in video_chapter_list:
+            video_sections_list = video_chapter.videosections.all()
+            for video_sections in video_sections_list:
+                ll.append({
+                    'name': video_sections.name,
+                    'link': video_sections.section_link,
+                    'section_type': video_sections.section_type,
+                    'duration': video_sections.duration,
+                    'pub_date': video_sections.pub_date,
+                })
+        return ll
+
     def __str__(self):
         return self.name
 
@@ -88,8 +105,8 @@ class Organization(BaseModel):
 
 class VideoChapter(BaseModel):
     """视频章节"""
-    video = models.ForeignKey("Video", related_name='videochapters', on_delete=models.CASCADE, verbose_name="视频章节名称")
-    chapter = models.SmallIntegerField(verbose_name="视频章节", default=1)
+    video = models.ForeignKey("Video", related_name='videochapters', on_delete=models.CASCADE, verbose_name="视频名称")
+    chapter = models.SmallIntegerField(verbose_name="小节数", default=1)
     name = models.CharField(max_length=128, verbose_name="章节标题")
     summary = models.TextField(verbose_name="章节介绍", blank=True, null=True)
     pub_date = models.DateField(verbose_name="发布日期", auto_now_add=True)
@@ -100,7 +117,7 @@ class VideoChapter(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return "%s:(第%s章)%s" % (self.video, self.chapter, self.name)
+        return self.name
 
 
 class VideoSection(BaseModel):
@@ -113,7 +130,7 @@ class VideoSection(BaseModel):
                                 verbose_name="视频章节")
     name = models.CharField(max_length=128, verbose_name="小节标题")
     orders = models.PositiveSmallIntegerField(verbose_name="小节排序")
-    section_type = models.SmallIntegerField(default=2, choices=section_type_choices, verbose_name="小节种类")
+    section_type = models.SmallIntegerField(default=1, choices=section_type_choices, verbose_name="小节种类")
     section_link = models.CharField(max_length=255, blank=True, null=True, verbose_name="小节链接",
                                     help_text="若是video，填vid,若是文档，填link")
     duration = models.CharField(verbose_name="视频时长", blank=True, null=True, max_length=32)  # 仅在前端展示使用

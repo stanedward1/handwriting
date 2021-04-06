@@ -11,6 +11,7 @@ from video import views
 
 router = SimpleRouter()
 router.register('categories', views.VideoCategoryView, basename='categories')
+router.register('video', views.VideoView, basename='video')
 
 urlpatterns = [
     path('', include(router.urls)),
