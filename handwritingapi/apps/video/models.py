@@ -54,6 +54,8 @@ class Video(BaseModel):
                     'duration': video_sections.duration,
                     'pub_date': video_sections.pub_date,
                 })
+                if len(ll) >= 6:
+                    return ll
         return ll
 
     def __str__(self):
