@@ -15,6 +15,11 @@ import '@/assets/css/global.css'
 import settings from '@/assets/js/settings'
 Vue.prototype.$settings = settings
 // 在所有需要与后台交互的组件中：this.$settings.base_url + '再拼接具体后台路由'
+// vue-video播放器
+require('video.js/dist/video-js.css');
+require('vue-video-player/src/custom-theme.css');
+import VideoPlayer from 'vue-video-player'
+Vue.use(VideoPlayer);
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
