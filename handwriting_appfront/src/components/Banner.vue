@@ -12,23 +12,24 @@
 </template>
 
 <script>
-    export default {
-        name: "Banner",
-        data(){
-           return {
-             banner_list:[]
-           }
-        },
-        created() {
-          // 当组件一创建，就向后台发请求，拿回轮播图数据
-          this.$axios.get(this.$settings.base_url+'/home/banner/').then(response=>{
-            console.log(response.data)
-            this.banner_list = response.data
-          }).catch(error=>{
-
-          })
-        },
+export default {
+  name: 'Banner',
+  data () {
+    return {
+      banner_list: []
     }
+  },
+  created () {
+    // 当组件一创建，就向后台发请求，拿回轮播图数据
+    this.$axios.get(this.$settings.base_url + '/home/banner/').then(response => {
+      console.log(response.data)
+      this.banner_list = response.data
+      // eslint-disable-next-line handle-callback-err
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+}
 </script>
 
 <style scoped>

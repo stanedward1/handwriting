@@ -26,5 +26,19 @@ class VideoModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Video
-        fields = ['id', 'name', 'video_img', 'students','attachment_path', 'brief',
+        fields = ['id', 'name', 'video_img', 'students', 'attachment_path', 'brief',
                   'sections', 'video_section', 'organization']
+
+
+class VideoSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.VideoSection
+        fields = ['name', 'orders', 'duration', 'pub_date', 'section_link', 'section_type_name']
+
+
+class VideoChapterSerializer(serializers.ModelSerializer):
+    videosections = VideoSectionSerializer(many=True)
+
+    class Meta:
+        model = models.VideoChapter
+        fields = ['name', 'chapter', 'summary', 'pub_date', 'videosections']

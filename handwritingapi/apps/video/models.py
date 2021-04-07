@@ -54,6 +54,8 @@ class Video(BaseModel):
                     'duration': video_sections.duration,
                     'pub_date': video_sections.pub_date,
                 })
+                if len(ll) >= 6:
+                    return ll
         return ll
 
     def __str__(self):
@@ -143,3 +145,7 @@ class VideoSection(BaseModel):
 
     def __str__(self):
         return "%s-%s" % (self.chapter, self.name)
+
+    @property
+    def section_type_name(self):
+        return self.get_section_type_display()

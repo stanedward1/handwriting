@@ -22,8 +22,8 @@
                             @click="filter.ordering=(filter.ordering=='-students'?'students':'-students')">人气
                         </li>
                         <li class="price"
-                            :class="filter.ordering=='price'?'price_up this':(filter.ordering=='-price'?'price_down this':'')"
-                            @click="filter.ordering=(filter.ordering=='-price'?'price':'-price')">最新
+                            :class="filter.ordering=='updated_time'?'updated_time_up this':(filter.ordering=='-updated_time'?'updated_time_down this':'')"
+                            @click="filter.ordering=(filter.ordering=='-updated_time'?'updated_time':'-updated_time')">最新
                         </li>
                     </ul>
                     <p class="condition-result">共{{video_total}}个视频</p>
@@ -38,30 +38,23 @@
                     </div>
                     <div class="video-info">
                         <h3>
-                            <router-link :to="'/free/detail/'+video.id">{{video.name}}</router-link>
+                            <router-link :to="'/video/detail/'+video.id">{{video.name}}</router-link>
                             <span><img src="@/assets/img/icon.svg" alt="">{{video.students}}人已加入学习</span></h3>
-                        <p class="teather-info">
-                            {{video.teacher.name}} {{video.teacher.title}} {{video.teacher.signature}}
+                        <p class="organization-info">
+                            {{video.organization.name}} {{video.organization.title}} &nbsp;&nbsp;&nbsp; {{video.organization.signature}}
                             <span v-if="video.sections>video.pub_sections">共{{video.sections}}课时/已更新{{video.pub_sections}}课时</span>
                             <span v-else>共{{video.sections}}课时/更新完成</span>
                         </p>
-                        <ul class="section-list">
-                            <li v-for="(section, key) in video.section_list" :key="section.name"><span
-                                    class="section-title">0{{key+1}}  |  {{section.name}}</span>
-                                <span class="free" v-if="section.free_trail">免费</span></li>
+                        <ul class="sections-list">
+                          <li v-for="(section,i) in video.video_section" :i="section.name">
+                            <span class="sections-title">0{{i+1}}&nbsp;|&nbsp;{{section.name}}</span>
+                          </li>
                         </ul>
-                        <div class="pay-box">
-                            <div v-if="video.discount_type">
-                                <span class="discount-type">{{video.discount_type}}</span>
-                                <span class="discount-price">￥{{video.real_price}}元</span>
-                                <span class="original-price">原价：{{video.price}}元</span>
-                            </div>
-                            <span v-else class="discount-price">￥{{video.price}}元</span>
-                            <span class="buy-now">立即购买</span>
-                        </div>
+                      <p class="handwriting">字之纵横,犹屋之楹梁,宜平直,不宜倾欹。</p>
                     </div>
                 </div>
             </div>
+            <!--分页部分-->
             <div class="video_pagination block">
                 <el-pagination
                         @size-change="handleSizeChange"
@@ -88,7 +81,7 @@ export default {
     return {
       category_list: [], // 视频分类列表
       video_list: [], // 视频列表
-      video_total: 0, // 当前视频的总数量
+      video_total: 2, // 当前视频的总数量
       filter: {
         video_category: 0, // 当前用户选择的视频分类，刚进入页面默认为全部，值为0
         ordering: '-id', // 数据的排序方式，默认值是-id，表示对于id进行降序排列
@@ -121,7 +114,6 @@ export default {
     }
   },
   methods: {
-
     handleSizeChange (val) {
       // 每页数据量发生变化时执行的方法
       this.filter.page = 1
@@ -166,7 +158,7 @@ export default {
       }
 
       // 获取视频列表信息
-      this.$axios.get(`${this.$settings.base_url}/video/free/`, {
+      this.$axios.get(`${this.$settings.base_url}/video/video/`, {
         params: filters
       }).then(response => {
         // console.log(response.data);
@@ -257,6 +249,11 @@ export default {
         clear: both;
     }
 
+    .video .ordering ul handwriting {
+       margin: auto;
+        font-size: 30px;
+    }
+
     .video .ordering .condition-result {
         float: right;
         font-size: 14px;
@@ -328,7 +325,6 @@ export default {
     }
 
     .video .video-item {
-        width: 1100px;
         background: #fff;
         padding: 20px 30px 20px 20px;
         margin-bottom: 35px;
@@ -383,7 +379,7 @@ export default {
         margin-right: 7px;
     }
 
-    .video-item .video-info .teather-info {
+    .video-item .video-info .organization-info {
         font-size: 14px;
         color: #9b9b9b;
         margin-bottom: 14px;
@@ -392,17 +388,17 @@ export default {
         border-bottom-color: rgba(51, 51, 51, .05);
     }
 
-    .video-item .video-info .teather-info span {
+    .video-item .video-info .organization-info span {
         float: right;
     }
 
-    .video-item .section-list::after {
+    .video-item .sections-list::after {
         content: "";
         display: block;
         clear: both;
     }
 
-    .video-item .section-list li {
+    .video-item .sections-list li {
         float: left;
         width: 44%;
         font-size: 14px;
@@ -413,7 +409,7 @@ export default {
         margin-bottom: 15px;
     }
 
-    .video-item .section-list li .section-title {
+    .video-item .sections-list li .sections-title {
         /* 以下3句，文本内容过多，会自动隐藏，并显示省略符号 */
         text-overflow: ellipsis;
         overflow: hidden;
@@ -422,12 +418,12 @@ export default {
         max-width: 200px;
     }
 
-    .video-item .section-list li:hover {
+    .video-item .sections-list li:hover {
         /*background-image: url("./src/assets/img/play.svg");*/
         color: #ffc210;
     }
 
-    .video-item .section-list li .free {
+    .video-item .sections-list li .video {
         width: 34px;
         height: 20px;
         color: #fd7b4d;
@@ -440,75 +436,13 @@ export default {
         white-space: nowrap;
     }
 
-    .video-item .section-list li:hover .free {
+    .video-item .sections-list li:hover .video {
         color: #ffc210;
         border-color: #ffc210;
     }
 
     .video-item {
         position: relative;
-    }
-
-    .video-item .pay-box {
-        position: absolute;
-        bottom: 20px;
-        width: 600px;
-    }
-
-    .video-item .pay-box::after {
-        content: "";
-        display: block;
-        clear: both;
-    }
-
-    .video-item .pay-box .discount-type {
-        padding: 6px 10px;
-        font-size: 16px;
-        color: #fff;
-        text-align: center;
-        margin-right: 8px;
-        background: #fa6240;
-        border: 1px solid #fa6240;
-        border-radius: 10px 0 10px 0;
-        float: left;
-    }
-
-    .video-item .pay-box .discount-price {
-        font-size: 24px;
-        color: #fa6240;
-        float: left;
-    }
-
-    .video-item .pay-box .original-price {
-        text-decoration: line-through;
-        font-size: 14px;
-        color: #9b9b9b;
-        margin-left: 10px;
-        float: left;
-        margin-top: 10px;
-    }
-
-    .video-item .pay-box .buy-now {
-        width: 120px;
-        height: 38px;
-        background: transparent;
-        color: #fa6240;
-        font-size: 16px;
-        border: 1px solid #fd7b4d;
-        border-radius: 3px;
-        transition: all .2s ease-in-out;
-        float: right;
-        text-align: center;
-        line-height: 38px;
-        position: absolute;
-        right: 0;
-        bottom: 5px;
-    }
-
-    .video-item .pay-box .buy-now:hover {
-        color: #fff;
-        background: #ffc210;
-        border: 1px solid #ffc210;
     }
 
     .video .video_pagination {
