@@ -24,3 +24,10 @@ class VideoView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     ordering_fields = ['id', 'updated_time', 'students']
 
     filter_fields = ['video_category', 'students']
+
+
+class VideoChapterView(GenericViewSet,ListModelMixin):
+    queryset = models.VideoChapter.objects.filter(is_delete=False,is_show=True)
+    serializer_class = serializer.VideoChapterSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['video']
