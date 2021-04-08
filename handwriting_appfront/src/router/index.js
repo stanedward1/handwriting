@@ -2,11 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home'
 // eslint-disable-next-line camelcase
-import handwriting_video from '../views/handwriting_video'
+import handwriting_video from '../views/HandwritingVideo'
 // eslint-disable-next-line camelcase
-import culture_video from '../views/culture_video'
-import mall from '../views/mall'
-import handwriting_video_detail from "../views/handwriting_video_detail";
+import culture_video from '../views/CultureVideo'
+import mall from '../views/Mall'
+// eslint-disable-next-line camelcase
+import handwriting_video_detail from '../views/HandwritingVideoDetail'
+// eslint-disable-next-line no-unused-vars
+import search from '../views/Search'
 
 Vue.use(Router)
 
@@ -36,6 +39,11 @@ export default new Router({
       path: '/mall',
       name: 'mall',
       component: mall
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: search
     }
   ]
 })

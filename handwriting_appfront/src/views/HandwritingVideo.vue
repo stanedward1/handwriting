@@ -42,8 +42,8 @@
                             <span><img src="@/assets/img/icon.svg" alt="">{{video.students}}人已加入学习</span></h3>
                         <p class="organization-info">
                             {{video.organization.name}} {{video.organization.title}} &nbsp;&nbsp;&nbsp; {{video.organization.signature}}
-                            <span v-if="video.sections>video.pub_sections">共{{video.sections}}课时/已更新{{video.pub_sections}}课时</span>
-                            <span v-else>共{{video.sections}}课时/更新完成</span>
+                            <span v-if="video.sections>video.pub_sections">共{{video.sections}}小节/已更新{{video.pub_sections}}小节</span>
+                            <span v-else>共{{video.sections}}小节/更新完成</span>
                         </p>
                         <ul class="sections-list">
                           <li v-for="(section,i) in video.video_section" :i="section.name">

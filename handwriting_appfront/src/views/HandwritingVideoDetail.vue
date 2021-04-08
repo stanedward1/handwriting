@@ -14,27 +14,16 @@
                 </div>
                 <div class="wrap-right">
                     <h3 class="video-name">{{video_info.name}}</h3>
-                    <p class="data">{{video_info.students}}人在学&nbsp;&nbsp;&nbsp;&nbsp;课程总时长：{{video_info.sections}}课时/{{video_info.pub_sections}}小时&nbsp;&nbsp;&nbsp;&nbsp;难度：{{video_info.level_name}}</p>
+                    <p class="data">{{video_info.students}}人在学&nbsp;&nbsp;&nbsp;&nbsp;视频总时长：{{video_info.sections}}小节/{{video_info.pub_sections}}小时</p>
                     <div class="sale-time">
-                        <p class="sale-type">更新时间 <span class="original_price">¥{{video_info.updated_time}}</span></p>
-                        <p class="expire"></p>
-                    </div>
-                    <div class="buy">
-                        <div class="buy-btn">
-                            <button class="buy-now">立即购买</button>
-                            <button class="free">免费试学</button>
-                        </div>
-                        <!--<div class="add-cart" @click="add_cart(video_info.id)">-->
-														<!--<img src="@/assets/img/cart-yellow.svg" alt="">加入购物车-->
-                        <!--</div>-->
+                        <p class="sale-type">更新时间 <span class="video.info.updated_time">{{video_info.updated_time}}</span></p>
                     </div>
                 </div>
             </div>
             <div class="video-tab">
                 <ul class="tab-list">
                     <li :class="tabIndex==1?'active':''" @click="tabIndex=1">详情介绍</li>
-                    <li :class="tabIndex==2?'active':''" @click="tabIndex=2">课程章节 <span :class="tabIndex!=2?'free':''">(试学)</span>
-                    </li>
+                    <li :class="tabIndex==2?'active':''" @click="tabIndex=2">视频章节</li>
                     <li :class="tabIndex==3?'active':''" @click="tabIndex=3">用户评论</li>
                     <li :class="tabIndex==4?'active':''" @click="tabIndex=4">常见问题</li>
                 </ul>
@@ -46,8 +35,8 @@
                     </div>
                     <div class="tab-item" v-if="tabIndex==2">
                         <div class="tab-item-title">
-                            <p class="chapter">课程章节</p>
-                            <p class="chapter-length">共{{video_chapters.length}}章 {{video_info.sections}}个课时</p>
+                            <p class="chapter">视频章节</p>
+                            <p class="chapter-length">共{{video_chapters.length}}章 {{video_info.sections}}个小节</p>
                         </div>
                         <div class="chapter-item" v-for="chapter in video_chapters" :key="chapter.name">
                             <p class="chapter-title">第{{chapter.chapter}}章·{{chapter.name}}
@@ -57,8 +46,6 @@
                                     <p class="name"><span class="index">{{chapter.chapter}}-{{section.orders}}</span>
                                         {{section.name}}<span class="free" v-if="section.free_trail">免费</span></p>
                                     <p class="time">{{section.duration}} </p>
-                                    <button class="try" v-if="section.free_trail">立即试学</button>
-                                    <button class="try" v-else>立即购买</button>
                                 </li>
                             </ul>
                         </div>
@@ -71,112 +58,112 @@
                     </div>
                 </div>
                 <div class="video-side">
-                    <div class="teacher-info">
-                        <h4 class="side-title"><span>授课老师</span></h4>
-                        <div class="teacher-content">
+                    <div class="organization-info">
+                        <h4 class="side-title"><span>视频所属机构或个人</span></h4>
+                        <div class="organization-content">
                             <div class="cont1">
-<!--                                <img :src="video_info.teacher.image">-->
+                                <img :src="video_info.organization.image">
                                 <div class="name">
-                                    <p class="teacher-name">{{video_info.teacher.name}}
-                                        {{video_info.teacher.title}}</p>
-                                    <p class="teacher-title">{{video_info.teacher.signature}}</p>
+                                    <p class="organization-name">{{video_info.organization.name}}
+                                        {{video_info.organization.title}}</p>
+                                    <p class="organization-title">{{video_info.organization.signature}}</p>
                                 </div>
                             </div>
-                            <p class="narrative">{{video_info.teacher.brief}}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--<Footer/>-->
+        <Footer/>
     </div>
 </template>
 
 <script>
-    import Header from "@/components/Header"
-    // import Footer from "@/components/Footer"
+import Header from '@/components/Header'
+// eslint-disable-next-line no-unused-vars
+import Footer from '../components/Footer'
 
-    // 加载组件
-    import {videoPlayer} from 'vue-video-player';
+// 加载组件
+import {videoPlayer} from 'vue-video-player'
 
-    export default {
-        name: "Detail",
-        data() {
-            return {
-                tabIndex: 2,   // 当前选项卡显示的下标
-                video_id: 0, // 当前课程信息的ID
-                video_info: {
-                    teacher: {},
-                }, // 课程信息
-                video_chapters: [], // 课程的章节课时列表
-                playerOptions: {
-                    aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-                    sources: [{ // 播放资源和资源格式
-                        type: "video/mp4",
-                        src: "http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4" //你的视频地址（必填）
-                    }],
-                }
-            }
-        },
-        created() {
-            this.get_video_id();
-            this.get_video_data();
-            this.get_chapter();
-        },
-        methods: {
-            onPlayerPlay() {
-                // 当视频播放时，执行的方法
-                console.log('视频开始播放')
-            },
-            onPlayerPause() {
-                // 当视频暂停播放时，执行的方法
-                console.log('视频暂停，可以打开广告了')
-            },
-            get_video_id() {
-                // 获取地址栏上面的课程ID
-                this.video_id = this.$route.params.pk || this.$route.query.pk;
-                if (this.video_id < 1) {
-                    let _this = this;
-                    _this.$alert("对不起，当前视频不存在！", "警告", {
-                        callback() {
-                            _this.$router.go(-1);
-                        }
-                    });
-                }
-            },
-            get_video_data() {
-                // ajax请求课程信息
-                this.$axios.get(`${this.$settings.base_url}/video/free/${this.video_id}/`).then(response => {
-                    // window.console.log(response.data);
-                    this.video_info = response.data;
-                    console.log(this.video_info)
-                }).catch(() => {
-                    this.$message({
-                        message: "对不起，访问页面出错！请联系客服工作人员！"
-                    });
-                })
-            },
-
-            get_chapter() {
-                // 获取当前课程对应的章节课时信息
-                // http://127.0.0.1:8000/video/chapters/?video=(pk)
-                this.$axios.get(`${this.$settings.base_url}/video/chapters/`, {
-                    params: {
-                        "video": this.video_id,
-                    }
-                }).then(response => {
-                    this.video_chapters = response.data;
-                }).catch(error => {
-                    window.console.log(error.response);
-                })
-            },
-        },
-        components: {
-            Header,
-            // Footer,
-            videoPlayer, // 注册组件
-        }
+export default {
+  name: 'Detail',
+  data () {
+    return {
+      tabIndex: 2, // 当前选项卡显示的下标
+      video_id: 0, // 当前视频信息的ID
+      video_info: {
+        name: {},
+        organization: {}
+      }, // 视频信息
+      video_chapters: [], // 视频的章节小节列表
+      playerOptions: {
+        aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        sources: [{ // 播放资源和资源格式
+          type: 'video/mp4',
+          src: 'http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4' // 你的视频地址（必填）
+        }]
+      }
     }
+  },
+  created () {
+    this.get_video_id()
+    this.get_video_data()
+    this.get_chapter()
+  },
+  methods: {
+    onPlayerPlay () {
+      // 当视频播放时，执行的方法
+      console.log('视频开始播放')
+    },
+    onPlayerPause () {
+      // 当视频暂停播放时，执行的方法
+      console.log('视频暂停，可以打开广告了')
+    },
+    get_video_id () {
+      // 获取地址栏上面的视频ID
+      this.video_id = this.$route.params.id || this.$route.query.id
+      if (this.video_id < 1) {
+        let _this = this
+        _this.$alert('对不起，当前视频不存在！', '警告', {
+          callback () {
+            _this.$router.go(-1)
+          }
+        })
+      }
+    },
+    get_video_data () {
+      // ajax请求视频信息
+      this.$axios.get(`${this.$settings.base_url}/video/video/${this.video_id}/`).then(response => {
+        // window.console.log(response.data);
+        this.video_info = response.data
+        console.log(this.video_info)
+      }).catch(() => {
+        this.$message({
+          message: '对不起，访问页面出错！请联系客服工作人员！'
+        })
+      })
+    },
+
+    get_chapter () {
+      // 获取当前视频对应的章节小节信息
+      this.$axios.get(`${this.$settings.base_url}/video/videochapter/`, {
+        params: {
+          'video': this.video_id
+        }
+      }).then(response => {
+        this.video_chapters = response.data
+      }).catch(error => {
+        window.console.log(error.response)
+      })
+    }
+  },
+  components: {
+    Header,
+    Footer,
+    videoPlayer // 注册组件
+  }
+}
 </script>
 
 <style scoped>
@@ -270,58 +257,6 @@
         color: #9b9b9b;
         margin-left: 10px;
         text-decoration: line-through;
-    }
-
-    .buy {
-        width: 464px;
-        padding: 0px 23px;
-        position: absolute;
-        left: 0;
-        bottom: 20px;
-        overflow: hidden;
-    }
-
-    .buy .buy-btn {
-        float: left;
-    }
-
-    .buy .buy-now {
-        width: 125px;
-        height: 40px;
-        border: 0;
-        background: #ffc210;
-        border-radius: 4px;
-        color: #fff;
-        cursor: pointer;
-        margin-right: 15px;
-        outline: none;
-    }
-
-    .buy .free {
-        width: 125px;
-        height: 40px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-right: 15px;
-        background: #fff;
-        color: #ffc210;
-        border: 1px solid #ffc210;
-    }
-
-    .add-cart {
-        float: right;
-        font-size: 14px;
-        color: #ffc210;
-        text-align: center;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    .add-cart img {
-        width: 20px;
-        height: 18px;
-        margin-right: 7px;
-        vertical-align: middle;
     }
 
     .video-tab {
@@ -507,11 +442,12 @@
     .video-side {
         width: 300px;
         height: auto;
-        margin-left: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
         float: right;
     }
 
-    .teacher-info {
+    .organization-info {
         background: #fff;
         margin-bottom: 20px;
         box-shadow: 0 2px 4px 0 #f0f0f0;
@@ -532,44 +468,37 @@
         padding-left: 12px;
     }
 
-    .teacher-content {
+    .organization-content {
         padding: 30px 20px;
         box-sizing: border-box;
     }
 
-    .teacher-content .cont1 {
+    .organization-content .cont1 {
         margin-bottom: 12px;
         overflow: hidden;
     }
 
-    .teacher-content .cont1 img {
+    .organization-content .cont1 img {
         width: 54px;
         height: 54px;
         margin-right: 12px;
         float: left;
     }
 
-    .teacher-content .cont1 .name {
+    .organization-content .cont1 .name {
         float: right;
     }
 
-    .teacher-content .cont1 .teacher-name {
+    .organization-content .cont1 .organization-name {
         width: 188px;
         font-size: 16px;
         color: #4a4a4a;
         padding-bottom: 4px;
     }
 
-    .teacher-content .cont1 .teacher-title {
+    .organization-content .cont1 .organization-title {
         width: 188px;
         font-size: 13px;
         color: #9b9b9b;
-        white-space: nowrap;
-    }
-
-    .teacher-content .narrative {
-        font-size: 14px;
-        color: #666;
-        line-height: 24px;
     }
 </style>

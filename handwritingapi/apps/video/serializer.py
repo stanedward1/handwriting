@@ -18,7 +18,7 @@ class VideoCategorySerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Organization
-        fields = ['name', 'signature']
+        fields = ['name', 'signature', 'image']
 
 
 class VideoModelSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class VideoModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Video
         fields = ['id', 'name', 'video_img', 'students', 'attachment_path', 'brief',
-                  'sections', 'video_section', 'organization']
+                  'sections', 'video_section', 'organization', 'updated_time']
 
 
 class VideoSectionSerializer(serializers.ModelSerializer):
