@@ -108,7 +108,7 @@ class Organization(BaseModel):
 class VideoChapter(BaseModel):
     """视频章节"""
     video = models.ForeignKey("Video", related_name='videochapters', on_delete=models.CASCADE, verbose_name="视频名称")
-    chapter = models.SmallIntegerField(verbose_name="小节数", default=1)
+    chapter = models.SmallIntegerField(verbose_name="章节排序", default=1)
     name = models.CharField(max_length=128, verbose_name="章节标题")
     summary = models.TextField(verbose_name="章节介绍", blank=True, null=True)
     pub_date = models.DateField(verbose_name="发布日期", auto_now_add=True)

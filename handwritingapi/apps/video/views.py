@@ -26,8 +26,16 @@ class VideoView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     filter_fields = ['video_category', 'students']
 
 
-class VideoChapterView(GenericViewSet,ListModelMixin):
-    queryset = models.VideoChapter.objects.filter(is_delete=False,is_show=True)
+class VideoChapterView(GenericViewSet, ListModelMixin):
+    queryset = models.VideoChapter.objects.filter(is_delete=False, is_show=True)
     serializer_class = serializer.VideoChapterSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['video']
+
+
+class VideoSearchView(GenericViewSet, ListModelMixin):
+    queryset = models.Video.objects.filter(is_delete=False, is_show=True)
+    serializer_class = serializer.VideoModelSerializer
+    pagination_class = PageNumberPagination
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
