@@ -21,7 +21,7 @@
                         <li class="hot" :class="(filter.ordering=='students' || filter.ordering=='-students')?'this':''"
                             @click="filter.ordering=(filter.ordering=='-students'?'students':'-students')">人气
                         </li>
-                        <li class="price"
+                        <li class="time"
                             :class="filter.ordering=='updated_time'?'updated_time_up this':(filter.ordering=='-updated_time'?'updated_time_down this':'')"
                             @click="filter.ordering=(filter.ordering=='-updated_time'?'updated_time':'-updated_time')">最新
                         </li>
@@ -285,12 +285,12 @@ export default {
         color: #ffc210;
     }
 
-    .video .ordering .price {
+    .video .ordering .time {
         position: relative;
     }
 
-    .video .ordering .price::before,
-    .video .ordering .price::after {
+    .video .ordering .time::before,
+    .video .ordering .time::after {
         cursor: pointer;
         content: "";
         display: block;
@@ -301,22 +301,22 @@ export default {
         right: 0;
     }
 
-    .video .ordering .price::before {
+    .video .ordering .time::before {
         border-bottom: 5px solid #aaa;
         margin-bottom: 2px;
         top: 2px;
     }
 
-    .video .ordering .price::after {
+    .video .ordering .time::after {
         border-top: 5px solid #aaa;
         bottom: 2px;
     }
 
-    .video .ordering .price_up::before {
+    .video .ordering .time_up::before {
         border-bottom-color: #ffc210;
     }
 
-    .video .ordering .price_down::after {
+    .video .ordering .time_down::after {
         border-top-color: #ffc210;
     }
 
