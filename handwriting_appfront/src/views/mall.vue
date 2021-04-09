@@ -1,10 +1,24 @@
 <template>
-  <h1>mall</h1>
+  <div class="mall">
+    <Header/>
+    <h1>mall</h1>
+    <div class="main">
+
+    </div>
+    <Footer/>
+  </div>
 </template>
 
 <script>
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+
 export default {
-  name: 'mall'
+  name: 'mall',
+  components: {
+    Header,
+    Footer
+  },
 }
 </script>
 
