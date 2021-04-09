@@ -4,6 +4,7 @@
 
     <!-- 视频列表 -->
     <div class="main">
+      <h1>总共搜索到{{video_total}}个视频集</h1>
       <div v-if="video_list.length > 0" class="video-list">
         <div class="video-item" v-for="video in video_list" :key="video.name">
           <div class="video-image">
@@ -90,7 +91,7 @@ export default {
     },
     get_video() {
       // 获取搜索的关键字
-      this.filter.search = this.$route.query.name || this.$route.query.wd;
+      this.filter.search = this.$route.query.name;
 
       // 获取视频列表信息
       this.$axios.get(`${this.$settings.base_url}/video/search/`, {
