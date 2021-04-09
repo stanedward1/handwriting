@@ -38,4 +38,4 @@ class GoodsSearchView(GenericViewSet, ListModelMixin):
     serializer_class = serializer.GoodsSerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter]
-    search_fields=['name']
+    search_fields = ['name']

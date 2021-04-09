@@ -5,7 +5,7 @@ import Home from '../views/Home'
 import handwriting_video from '../views/HandwritingVideo'
 // eslint-disable-next-line camelcase
 import culture_video from '../views/CultureVideo'
-import mall from '../views/Mall'
+import mall from '../views/Goods'
 // eslint-disable-next-line camelcase
 import handwriting_video_detail from '../views/HandwritingVideoDetail'
 // eslint-disable-next-line no-unused-vars
