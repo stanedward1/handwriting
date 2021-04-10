@@ -5,7 +5,9 @@ import Home from '../views/Home'
 import handwriting_video from '../views/HandwritingVideo'
 // eslint-disable-next-line camelcase
 import culture_video from '../views/CultureVideo'
-import mall from '../views/Goods'
+// eslint-disable-next-line no-unused-vars
+import Goods from '../views/Goods'
+import GoodsDetail from '../views/GoodsDetail'
 // eslint-disable-next-line camelcase
 import handwriting_video_detail from '../views/HandwritingVideoDetail'
 // eslint-disable-next-line no-unused-vars
@@ -37,8 +39,13 @@ export default new Router({
     },
     {
       path: '/mall',
-      name: 'mall',
-      component: mall
+      name: 'goods',
+      component: Goods
+    },
+    {
+      path: '/mall/detail/:id',
+      name: 'GoodsDetail',
+      component: GoodsDetail
     },
     {
       path: '/search',

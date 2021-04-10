@@ -31,7 +31,7 @@
             <div class="video-content">
                 <div class="video-tab-list">
                     <div class="tab-item" v-if="tabIndex==1">
-                        <div class="video-brief" v-html="video_info.brief_text"></div>
+                        <div class="video-brief" v-html="video_info.brief"></div>
                     </div>
                     <div class="tab-item" v-if="tabIndex==2">
                         <div class="tab-item-title">
@@ -237,28 +237,6 @@ export default {
         text-align: center;
     }
 
-    .video-price {
-        background: #fff;
-        font-size: 14px;
-        color: #4a4a4a;
-        padding: 5px 23px;
-    }
-
-    .discount {
-        font-size: 26px;
-        color: #fa6240;
-        margin-left: 10px;
-        display: inline-block;
-        margin-bottom: -5px;
-    }
-
-    .original {
-        font-size: 14px;
-        color: #9b9b9b;
-        margin-left: 10px;
-        text-decoration: line-through;
-    }
-
     .video-tab {
         width: 100%;
         background: #fff;
@@ -312,8 +290,8 @@ export default {
     }
 
     .tab-item {
-        width: 880px;
         background: #fff;
+        white-space:pre-wrap;
         padding-bottom: 20px;
         box-shadow: 0 2px 4px 0 #f0f0f0;
     }

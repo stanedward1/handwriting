@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from goods import filters, models, serializer
@@ -12,14 +12,14 @@ from goods.serializer import GoodsSerializer, CategorySerializer
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 
-class GoodsListViewSet(GenericViewSet, ListModelMixin):
+class GoodsListViewSet(GenericViewSet, ListModelMixin,RetrieveModelMixin):
     """
     商品列表页,分页，搜索，过滤，排序！！！
     """
     queryset = models.Goods.objects.filter(is_delete=False, is_show=True).order_by('orders')
     serializer_class = GoodsSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     ofdering_fields = ['id', 'name']
     filter_fields = ['name', 'desc']
 

@@ -34,13 +34,13 @@
       <div class="goods-list">
         <div class="goods-item" v-for="goods in goods_list" :key="goods.name">
           <div class="goods-image">
-            <router-link :to="'/goods/detail/'+goods.id">
+            <router-link :to="'/mall/detail/'+goods.id">
               <img :src="goods.goods_img" alt="">
             </router-link>
           </div>
           <div class="goods-info">
             <h3>
-              <router-link :to="'/goods/detail/'+goods.id">{{ goods.name }}</router-link>
+              <router-link :to="'/mall/detail/'+goods.id">{{ goods.name }}</router-link>
               <span><img src="@/assets/img/icon.svg" alt="">{{ goods.sold_num }}人买过</span>
             </h3>
             <p goods-other-info>
@@ -48,10 +48,10 @@
             </p>
             <br>
             <p goods-desc>
-              <span>{{ goods.desc }}</span>
+              <span>{{ goods.desc.substring(0,149)+"--------" }}</span>
             </p>
             <div class="pay-box">
-              <span class="discount-price">￥{{ goods.goods_price }}</span>
+              <span class="goods_price">￥{{ goods.goods_price }}</span>
               <span class="buy-now">立即购买</span>
               <span class="buy-now">加入购物车</span>
             </div>
@@ -69,7 +69,7 @@ import Footer from '../components/Footer'
 
 export default {
   name: 'mall',
-  data() {
+  data () {
     return {
       category_list: [], // 商品分类列表
       goods_list: [], // 商品列表
@@ -82,7 +82,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.get_category()
     this.get_goods()
   },
@@ -106,12 +106,12 @@ export default {
     }
   },
   methods: {
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       // 每页数据量发生变化时执行的方法
       this.filter.page = 1
       this.filter.page_size = val
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       // 页码发生变化时执行的方法
       this.filter.page = val
     },
@@ -125,7 +125,7 @@ export default {
         })
       })
     },
-    get_goods() {
+    get_goods () {
       // 排序
       let filters = {
         ordering: this.filter.ordering // 排序
@@ -360,6 +360,44 @@ export default {
   position: relative;
 }
 
+.mall .goods-item .goods-info {
+  float: left;
+  width: 596px;
+}
+
+.goods-item .goods-info h3 a {
+  font-size: 26px;
+  color: #333;
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+
+.goods-item .goods-info h3 span {
+  font-size: 14px;
+  color: #9b9b9b;
+  float: right;
+  margin-top: 14px;
+}
+
+.goods-item .goods-info h3 span img {
+  width: 11px;
+  height: auto;
+  margin-right: 7px;
+}
+
+.goods-item .goods-info .goods-other-info {
+  font-size: 14px;
+  color: #9b9b9b;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #333;
+  border-bottom-color: rgba(51, 51, 51, .05);
+}
+
+.goods-item .goods-info .goods-other-info span {
+  float: left;
+}
+
 .goods-item .pay-box {
   position: absolute;
   bottom: 20px;
@@ -372,19 +410,7 @@ export default {
   clear: both;
 }
 
-.goods-item .pay-box .discount-type {
-  padding: 6px 10px;
-  font-size: 16px;
-  color: #fff;
-  text-align: center;
-  margin-right: 8px;
-  background: #fa6240;
-  border: 1px solid #fa6240;
-  border-radius: 10px 0 10px 0;
-  float: left;
-}
-
-.goods-item .pay-box .discount-price {
+.goods-item .pay-box .goods_price {
   font-size: 24px;
   color: #fa6240;
   float: left;
