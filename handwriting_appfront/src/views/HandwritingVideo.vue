@@ -34,7 +34,9 @@
             <div class="video-list">
                 <div class="video-item" v-for="video in video_list" :key="video.name">
                     <div class="video-image">
+                      <router-link :to="'/video/detail/'+video.id">
                         <img :src="video.video_img" alt="">
+                      </router-link>
                     </div>
                     <div class="video-info">
                         <h3>
