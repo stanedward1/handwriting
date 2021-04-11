@@ -238,3 +238,14 @@ CACHES = {
         }
     }
 }
+
+# 后台基URL
+BASE_URL = 'http://127.0.0.1:8000'
+# 前台基URL
+LUFFY_URL = 'http://127.0.0.1:8081'
+# 支付宝同步异步回调接口配置
+# 后台异步回调接口
+NOTIFY_URL = BASE_URL + "/order/success/"
+# 前台同步回调接口，没有 / 结尾
+RETURN_URL = LUFFY_URL + "/pay/success"
+

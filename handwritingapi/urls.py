@@ -9,6 +9,7 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('video/', include('video.urls')),
     path('goods/', include('goods.urls')),
+    path('trade/', include('trade.urls')),
     # 打开media文件夹的路径
     re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
