@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from goods.models import Goods
-
-User = get_user_model()
+from user.models import User
 
 
 class ShoppingCart(models.Model):
@@ -25,53 +24,60 @@ class ShoppingCart(models.Model):
         return "%s(%d)".format(self.goods.name, self.nums)
 
 
-class OrderInfo(models.Model):
-    """
-    订单信息
-    """
-    ORDER_STATUS = (
-        ("TRADE_SUCCESS", "成功"),
-        ("TRADE_CLOSED", "超时关闭"),
-        ("WAIT_BUYER_PAY", "交易创建"),
-        ("TRADE_FINISHED", "交易结束"),
-        ("paying", "待支付"),
+class Order(models.Model):
+    """订单模型"""
+    status_choices = (
+        (0, '未支付'),
+        (1, '已支付'),
+        (2, '已取消'),
+        (3, '超时取消'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="用户")
-    # unique订单号唯一
-    order_sn = models.CharField(max_length=30, null=True, blank=True, unique=True, verbose_name="订单编号")
-    # 支付宝支付时的交易号与本系统进行关联
-    trade_no = models.CharField(max_length=100, unique=True, null=True, blank=True, verbose_name=u"交易号")
-    # 以防用户支付到一半不支付了
-    pay_status = models.CharField(choices=ORDER_STATUS, default="paying", max_length=30, verbose_name="订单状态")
-    post_script = models.CharField(max_length=200, verbose_name="订单留言")
-    order_mount = models.FloatField(default=0.0, verbose_name="订单金额")
-    pay_time = models.DateTimeField(null=True, blank=True, verbose_name="支付时间")
-    # 用户的基本信息
-    address = models.CharField(max_length=100, default="", verbose_name="收货地址")
-    signer_name = models.CharField(max_length=20, default="", verbose_name="签收人")
-    singer_mobile = models.CharField(max_length=11, verbose_name="联系电话")
+    pay_choices = (
+        (1, '支付宝'),
+        (2, '微信支付'),
+    )
+    subject = models.CharField(max_length=150, verbose_name="订单标题")
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="订单总价", default=0)
+    out_trade_no = models.CharField(max_length=64, verbose_name="订单号", unique=True,null=True)
+    trade_no = models.CharField(max_length=64, null=True, verbose_name="流水号")
+    order_status = models.SmallIntegerField(choices=status_choices, default=0, verbose_name="订单状态")
+    pay_type = models.SmallIntegerField(choices=pay_choices, default=1, verbose_name="支付方式")
+    pay_time = models.DateTimeField(null=True, verbose_name="支付时间")
+    user = models.ForeignKey(User, related_name='order_user', on_delete=models.DO_NOTHING, db_constraint=False, verbose_name="下单用户")
+    created_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
 
     class Meta:
-        verbose_name = u"订单信息"
-        verbose_name_plural = verbose_name
+        db_table = "order_order"
+        verbose_name = "订单记录"
+        verbose_name_plural = "订单记录"
 
     def __str__(self):
-        return str(self.order_sn)
+        return "%s - ￥%s" % (self.subject, self.total_amount)
+
+    @property
+    def goods(self):
+        data_list = []
+        for item in self.goods.all():
+            data_list.append({
+                "id": item.id,
+                "name": item.name,
+                "goods_price": item.goods_price,
+            })
+        return data_list
 
 
-class OrderGoods(models.Model):
-    """
-    订单内的商品详情
-    """
-    # 一个订单对应多个商品，所以添加外键
-    order = models.ForeignKey(OrderInfo, on_delete=models.CASCADE, verbose_name="订单信息", related_name="goods")
-    # 两个外键形成一张关联表
-    goods = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name="商品")
-    goods_num = models.IntegerField(default=0, verbose_name="商品数量")
+class OrderDetail(models.Model):
+    """订单详情"""
+    order = models.ForeignKey(Order, related_name='order_courses', on_delete=models.CASCADE, db_constraint=False, verbose_name="订单")
+    goods = models.ForeignKey(Goods, related_name='goods_orders', on_delete=models.CASCADE, db_constraint=False, verbose_name="课程")
 
     class Meta:
-        verbose_name = "订单商品"
-        verbose_name_plural = verbose_name
+        db_table = "order_detail"
+        verbose_name = "订单详情"
+        verbose_name_plural = "订单详情"
 
     def __str__(self):
-        return str(self.order.order_sn)
+        try:
+            return "%s的订单：%s" % (self.goods.name, self.order.out_trade_no)
+        except:
+            return super().__str__()
