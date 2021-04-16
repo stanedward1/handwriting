@@ -48,11 +48,11 @@
             </p>
             <br>
             <p goods-desc>
-              <span>{{ goods.desc.substring(0,149)+"--------" }}</span>
+              <span>{{ goods.desc.substring(0, 149) + "--------" }}</span>
             </p>
             <div class="pay-box">
               <span class="goods_price">￥{{ goods.goods_price }}</span>
-              <span class="buy-now">立即购买</span>
+              <span class="buy-now" @click="buy_now(goods)">立即购买</span>
               <span class="buy-now">加入购物车</span>
             </div>
           </div>
@@ -69,7 +69,7 @@ import Footer from '../components/Footer'
 
 export default {
   name: 'mall',
-  data () {
+  data() {
     return {
       category_list: [], // 商品分类列表
       goods_list: [], // 商品列表
@@ -82,7 +82,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.get_category()
     this.get_goods()
   },
@@ -106,12 +106,12 @@ export default {
     }
   },
   methods: {
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       // 每页数据量发生变化时执行的方法
       this.filter.page = 1
       this.filter.page_size = val
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       // 页码发生变化时执行的方法
       this.filter.page = val
     },
@@ -125,7 +125,7 @@ export default {
         })
       })
     },
-    get_goods () {
+    get_goods() {
       // 排序
       let filters = {
         ordering: this.filter.ordering // 排序
@@ -162,9 +162,38 @@ export default {
           message: '获取商品信息有误，请联系客服工作人员'
         })
       })
+    },
+    buy_now(goods) {
+      let token = this.$cookies.get('token')
+      if (!token) {
+        this.$message({
+          message: '您还没登录，请登录！'
+        })
+        return false
+      }
+       this.$axios({
+                    url: this.$settings.base_url + '/trade/pay/',
+                    method: 'post',
+                    headers: {
+                        Authorization: 'jwt ' + token,
+                    },
+                    data: {
+                        subject: goods.name,
+                        total_amount: goods.goods_price,
+                        pay_type: 1,  // 现在只能默认1，为支付宝
+                        goods: [goods.id]
+                    }
+                }).then(response => {
+                    let pay_url = response.data;
+                    // console.log(pay_url)
+                    // 本页面标签调整：可以选择 _self 或 _blank
+                    open(pay_url, '_self');
+                }).catch(error => {
+                    console.log(error.response.data)
+                })
+            },
+        }
     }
-  }
-}
 </script>
 
 <style scoped>
@@ -256,7 +285,6 @@ export default {
   color: #9b9b9b;
   line-height: 28px;
 }
-
 
 .mall .ordering ul li {
   float: left;
