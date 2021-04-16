@@ -12,7 +12,7 @@ APP_PRIVATE_KEY_STRING = open(os.path.join(os.path.dirname(os.path.abspath(__fil
 ALIPAY_PUBLIC_KEY_STRING = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pem', 'alipay_public_key.pem')).read()
 
 # 应用ID
-APP_ID = '2016093000631831'
+APP_ID = '*****'
 
 # 加密方式
 SIGN = 'RSA2'

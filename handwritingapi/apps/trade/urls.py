@@ -10,9 +10,11 @@ from rest_framework.routers import SimpleRouter
 from trade import views
 
 router = SimpleRouter()
-router.register('pay', views.PayView, basename='pay')
+router.register('pay', views.PayViewSet, basename='pay')
+
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('success/', views.SuccessViewSet.as_view({'get': 'get', 'post': 'post'}))
+
+    # path('success/', views.SuccessViewSet.as_view({'get': 'get', 'post': 'post'}))
 ]

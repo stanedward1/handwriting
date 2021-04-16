@@ -4,63 +4,78 @@
 # @Email   : longbiu@foxmail.com
 # @File    : serializer.py
 # @Software: PyCharm
+from django.conf import settings
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
+import goods
 from goods.models import Goods
+from libs.iPay.test import subject
 from trade import models
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    goods = serializers.PrimaryKeyRelatedField(queryset=Goods.objects.all(),write_only=True,many=True)
-    class Meta:
-        model = models.OrderInfo
-        fields = '__all__'
+    # 要支持单购物和群购物(购物车)，前台要提交 课程主键(们)
+    goods = serializers.PrimaryKeyRelatedField(queryset=Goods.objects.all(), write_only=True, many=True)
 
-        # 生成订单号
+    class Meta:
+        model = models.Order
+        fields = ('subject', 'total_amount', 'pay_type', 'goods')
+        extra_kwargs = {
+            'total_amount': {
+                'required': True
+            },
+            'pay_type': {
+                'required': True
+            },
+        }
+
+    def _check_total_amount(self, attrs):
+        total_amount = attrs.get('total_amount')
+        goods_list = attrs.get('goods')
+        total_price = 0
+        for goods in goods_list:
+            total_price+=goods.goods_price
+        if total_price!=total_amount:
+            raise ValidationError('价格不合法')
+        return total_amount
+
+    def validate(self, attrs):
+        total_amount = self._check_total_amount(attrs)
+        out_trade_no = self._get_out_trade_no()
+        user = self._get_user()
+        pay_url = self._get_pay_url(out_trade_no, total_amount, attrs.get('subject'))
+        self._before_create(attrs, user,pay_url)
+        return attrs
 
     def _get_out_trade_no(self):
         import uuid
-        code = '%s' % uuid.uuid4()
-        return code.replace('-', '')
-
-        # 获取支付人
+        return str(uuid.uuid4()).replace('-','')
 
     def _get_user(self):
-        return self.context.get('request').user
+        request = self.context.get('request')
+        return request.user
 
-        # 入库(两个表)的信息准备
+    def _get_pay_url(self, out_trade_no, total_amount, subject):
+        from libs import iPay
+        order_string = iPay.alipay.api_alipay_trade_page_pay(
+            out_trade_no=out_trade_no,
+            total_amount=float(total_amount),  # 只有生成支付宝链接时，不能用Decimal
+            subject=subject,
+            return_url=settings.RETURN_URL,
+            notify_url=settings.NOTIFY_URL,
+        )
+        pay_url = iPay.gateway + '?' + order_string
+        # 将支付链接存入，传递给views
+        self.context['pay_url'] = pay_url
 
     def _before_create(self, attrs, user, out_trade_no):
         attrs['user'] = user
         attrs['out_trade_no'] = out_trade_no
 
-    def validate(self, attrs):
-        # 1）订单总价校验
-        total_amount = self._check_total_amount(attrs)
-        # 2）生成订单号
-        out_trade_no = self._get_out_trade_no()
-        # 3）支付用户：request.user
-        user = self._get_user()
-        # 4）支付链接生成
-        self._get_pay_url(out_trade_no, total_amount, attrs.get('subject'))
-        # 5）入库(两个表)的信息准备
-        self._before_create(attrs, user, out_trade_no)
-
-        # 代表该校验方法通过，进入入库操作
-        return attrs
-
-        # 重写入库方法的目的：完成订单与订单详情两个表入库操作
-
     def create(self, validated_data):
-        courses = validated_data.pop('courses')
-        # 订单表入库，不需要courses
+        goods_list = validated_data.pop('goods')
         order = models.Order.objects.create(**validated_data)
-
-        # 订单详情表入库：只需要订单对象，课程对象(courses要拆成一个个course)
-        for course in courses:
-            models.OrderDetail.objects.create(order=order, course=course, price=course.price, real_price=course.price)
-
-        # 先循环制造数据列表[{}, ..., {}]，用群增完成入库 bulk_create()，效率高
-
+        for goods in goods_list:
+            models.OrderDetail.objects.create(order=order,goods=goods)
         return order
-
