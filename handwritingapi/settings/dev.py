@@ -219,6 +219,9 @@ import datetime
 JWT_AUTH = {
     # 过期时间33天
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=33),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',  # 设置 请求头中的前缀，不写默认是"JWT "
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'utils.jwt_handler.jwt_response_payload_handler',
 }
 
 REST_FRAMEWORK = {
@@ -247,7 +250,7 @@ BASE_URL = 'http://127.0.0.1:8000'
 HAND_URL = 'http://127.0.0.1:8081'
 # 支付宝同步异步回调接口配置
 # 后台异步回调接口
-NOTIFY_URL = BASE_URL + "/order/success/"
+NOTIFY_URL = BASE_URL + "/trade/success/"
 # 前台同步回调接口，没有 / 结尾
 RETURN_URL = HAND_URL + "/pay/success"
 
