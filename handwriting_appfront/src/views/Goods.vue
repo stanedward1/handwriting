@@ -59,6 +59,18 @@
         </div>
       </div>
     </div>
+    <!--分页部分-->
+    <div class="goods_pagination block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="filter.page"
+        :page-sizes="[2, 3, 5, 10]"
+        :page-size="filter.page_size"
+        layout="sizes, prev, pager, next"
+        :total="goods_total">
+      </el-pagination>
+    </div>
     <Footer/>
   </div>
 </template>
@@ -125,7 +137,7 @@ export default {
         })
       })
     },
-    get_goods() {
+    get_goods () {
       // 排序
       let filters = {
         ordering: this.filter.ordering // 排序
@@ -171,29 +183,30 @@ export default {
         })
         return false
       }
-       this.$axios({
-                    url: this.$settings.base_url + '/trade/pay/',
-                    method: 'post',
-                    headers: {
-                        Authorization: 'jwt ' + token,
-                    },
-                    data: {
-                        subject: goods.name,
-                        total_amount: goods.goods_price,
-                        pay_type: 1,  // 现在只能默认1，为支付宝
-                        goods: [goods.id]
-                    }
-                }).then(response => {
-                    let pay_url = response.data;
-                    // console.log(pay_url)
-                    // 本页面标签调整：可以选择 _self 或 _blank
-                    open(pay_url, '_self');
-                }).catch(error => {
-                    console.log(error.response.data)
-                })
-            },
+      this.$axios({
+        url: this.$settings.base_url + '/trade/pay/',
+        method: 'post',
+        headers: {
+          Authorization: 'jwt ' + token
+        },
+        data: {
+          subject: goods.name,
+          total_amount: goods.goods_price,
+          pay_type: 1, // 现在只能默认1，为支付宝
+          goods: [goods.id]
         }
+      }).then(response => {
+        // eslint-disable-next-line camelcase
+        let pay_url = response.data
+        // console.log(pay_url)
+        // 本页面标签调整：可以选择 _self 或 _blank
+        open(pay_url, '_self')
+      }).catch(error => {
+        console.log(error.response.data)
+      })
     }
+  }
+}
 </script>
 
 <style scoped>
@@ -476,6 +489,11 @@ export default {
 }
 
 .goods .goods_pagination {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.goods_pagination {
   margin-bottom: 60px;
   text-align: center;
 }
