@@ -16,5 +16,5 @@ router.register('pay', views.PayViewSet, basename='pay')
 urlpatterns = [
     path('', include(router.urls)),
 
-    # path('success/', views.SuccessViewSet.as_view({'get': 'get', 'post': 'post'}))
+    path('success/', views.SuccessViewSet.as_view({'get': 'get', 'post': 'post'}))
 ]

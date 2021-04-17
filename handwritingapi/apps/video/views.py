@@ -13,6 +13,7 @@ from .paginations import PageNumberPagination
 class VideoCategoryView(GenericViewSet, ListModelMixin):
     queryset = models.VideoCategory.objects.filter(is_delete=False, is_show=True).order_by('orders')
     serializer_class = serializer.VideoCategorySerializer
+    fields = '__all__'
 
 
 class VideoView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
