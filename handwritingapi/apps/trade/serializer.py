@@ -8,10 +8,10 @@ from django.conf import settings
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-import goods
+
 from goods.models import Goods
-from libs.iPay.test import subject
 from trade import models
+from trade.models import ShoppingCart
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -79,3 +79,25 @@ class OrderSerializer(serializers.ModelSerializer):
         for goods in goods_list:
             models.OrderDetail.objects.create(order=order,goods=goods)
         return order
+
+
+class ShopCartSerializer(serializers.Serializer):
+    nums = serializers.IntegerField(required=True,min_value=1,error_messages={
+        "min_value":"商品数量不能小于一",
+        "required":"请选择商品数量"
+    })
+    goods = serializers.PrimaryKeyRelatedField(required=True,queryset=Goods.objects.all())
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        nums = validated_data["nums"]
+        goods = validated_data["goods"]
+        existed = ShoppingCart.objects.filter(user=user,goods=goods)
+        if existed:
+            existed = existed[0]
+            existed.nums += nums
+            existed.save()
+        else:
+            existed = ShoppingCart.objects.create(**validated_data)
+
+        return existed

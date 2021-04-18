@@ -22,7 +22,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
     'simpleui',
     'django.contrib.admin',
@@ -35,6 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_filters',
+    'rest_framework.authtoken',
 
     'user',
     'home',
@@ -212,7 +212,7 @@ CORS_ALLOW_HEADERS = (
     'Pragma',
 )
 
-APPEND_SLASH=False
+APPEND_SLASH = False
 
 import datetime
 
@@ -227,7 +227,11 @@ JWT_AUTH = {
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'sms': '3/m',
-    }
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
 }
 
 # 缓存（django默认不支持redis做缓存）
@@ -253,4 +257,3 @@ HAND_URL = 'http://127.0.0.1:8081'
 NOTIFY_URL = BASE_URL + "/trade/success/"
 # 前台同步回调接口，没有 / 结尾
 RETURN_URL = HAND_URL + "/pay/success"
-

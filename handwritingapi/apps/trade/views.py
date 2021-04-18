@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework.mixins import CreateModelMixin
@@ -7,11 +8,12 @@ from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from utils.logger import logger
-from utils.response import APIResponse
 from . import models, serializer
 
 # 支付接口
+from .models import ShoppingCart
 from .paginations import PageNumberPagination
+from .serializer import ShopCartSerializer
 
 
 class PayViewSet(GenericViewSet, CreateModelMixin):
@@ -38,19 +40,13 @@ class SuccessViewSet(ViewSet):
 
     # 支付宝同步回调给前台，在同步通知给后台处理
     def get(self, request, *args, **kwargs):
-        return Response('后台已知晓，Over！！！')
-
-        # 不能在该接口完成订单修改操作
-        # 但是可以在该接口中校验订单状态(已经收到支付宝post异步通知，订单已修改)，告诉前台
-        print(type(request.query_params))  # django.http.request.QueryDict
-        print(type(request.query_params.dict()))  # dict
-
         out_trade_no = request.query_params.get('out_trade_no')
-        try:
-            models.Order.objects.get(out_trade_no=out_trade_no, order_status=1)
-            return APIResponse(result=True)
-        except:
-            return APIResponse(1, 'error', result=False)
+        order = models.Order.objects.filter(out_trade_no=out_trade_no).first()
+        if order.order_status==1:
+            return Response(True)
+        else:
+            return Response(False)
+
 
     # 支付宝异步回调处理
     def post(self, request, *args, **kwargs):
@@ -71,3 +67,18 @@ class SuccessViewSet(ViewSet):
         except:
             pass
         return Response('failed')
+
+class ShoppingCartViewSet(viewsets.ModelViewSet):
+    """
+    购物车功能
+    list
+        获取购物车详情
+    create
+        假如购物车
+    delete
+        删除购物车记录
+    """
+    authentication_classes = [JSONWebTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = ShopCartSerializer
+    queryset = ShoppingCart.objects.all()

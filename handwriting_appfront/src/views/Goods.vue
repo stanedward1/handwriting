@@ -164,7 +164,7 @@ export default {
       // 获取商品列表信息
       this.$axios.get(`${this.$settings.base_url}/goods/goods/`, {
         params: filters
-      }).then(response => {
+      }).then(response => {ettings.base_url
         // console.log(response.data);
         this.goods_list = response.data.results
         this.goods_total = response.data.count
