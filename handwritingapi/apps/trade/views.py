@@ -1,3 +1,4 @@
+from coreapi.auth import SessionAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter
@@ -35,14 +36,15 @@ class PayViewSet(GenericViewSet, CreateModelMixin):
         return Response(serializer.context['pay_url'])
 
 class SuccessViewSet(ViewSet):
-    authentication_classes = [JSONWebTokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    # permission_classes = [IsAuthenticated]
 
     # 支付宝同步回调给前台，在同步通知给后台处理
     def get(self, request, *args, **kwargs):
         out_trade_no = request.query_params.get('out_trade_no')
         order = models.Order.objects.filter(out_trade_no=out_trade_no).first()
-        if order.order_status==1:
+        #bug by nick
+        if order and order.order_status==1:
             return Response(True)
         else:
             return Response(False)
@@ -58,7 +60,7 @@ class SuccessViewSet(ViewSet):
             result = iPay.alipay.verify(result_data, signature)
             if result and result_data["trade_status"] in ("TRADE_SUCCESS", "TRADE_FINISHED"):
                 # 完成订单修改：订单状态、流水号、支付时间
-                models.Order.objects.filter(out_trade_no=out_trade_no).update(order_status=1)
+                models.Order.objects.filter(trade_no=out_trade_no).update(order_status=1)
                 # 完成日志记录
                 logger.warning('%s订单支付成功' % out_trade_no)
                 return Response('success')
@@ -82,3 +84,5 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = ShopCartSerializer
     queryset = ShoppingCart.objects.all()
+    fields = '__all__'
+
