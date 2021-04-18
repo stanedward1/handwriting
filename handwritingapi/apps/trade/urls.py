@@ -11,6 +11,7 @@ from trade import views
 
 router = SimpleRouter()
 router.register('pay', views.PayViewSet, basename='pay')
+router.register('shopcarts', views.ShoppingCartViewSet, basename='shopcarts')
 
 
 urlpatterns = [

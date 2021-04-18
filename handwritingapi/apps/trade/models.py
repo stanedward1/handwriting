@@ -1,6 +1,3 @@
-import datetime
-
-from django.contrib.auth import get_user_model
 from django.db import models
 
 from goods.models import Goods
@@ -21,7 +18,7 @@ class ShoppingCart(models.Model):
         unique_together = ("user", "goods")
 
     def __str__(self):
-        return "%s(%d)".format(self.goods.name, self.nums)
+        return "%s(%d)".format(self.user.username,self.goods.name, self.nums)
 
 
 class Order(models.Model):
