@@ -4,6 +4,7 @@ from django.views.static import serve
 from django.conf import settings
 from rest_framework.schemas import get_schema_view
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', include('home.urls')),

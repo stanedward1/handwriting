@@ -12,9 +12,9 @@ from utils.logger import logger
 from . import models, serializer
 
 # 支付接口
-from .models import ShoppingCart
+from .models import ShoppingCart, OrderDetail
 from .paginations import PageNumberPagination
-from .serializer import ShopCartSerializer
+from .serializer import ShopCartSerializer, ShopCartDetailSerializer, OrderSerializer
 
 
 class PayViewSet(GenericViewSet, CreateModelMixin):
@@ -82,7 +82,17 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
     """
     authentication_classes = [JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
-    serializer_class = ShopCartSerializer
-    queryset = ShoppingCart.objects.all()
-    fields = '__all__'
+    # serializer_class = ShopCartSerializer
+    # queryset = ShoppingCart.objects.all()
+    lookup_field = "goods_id"
 
+    # def get(self,request,goods_id):
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializer.ShopCartDetailSerializer
+        else:
+            return ShopCartSerializer
+
+    def get_queryset(self):
+        return ShoppingCart.objects.filter(user=self.request.user)
