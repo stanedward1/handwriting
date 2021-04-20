@@ -19,6 +19,9 @@
         <li class="ele">
           <span @click="goPage('/mall')" :class="{active: url_path === '/mall'}">商城</span>
         </li>
+        <li class="ele">
+          <span @click="goPage('/cart')" :class="{active: url_path === '/cart'}">购物车</span>
+        </li>
       </ul>
 
 

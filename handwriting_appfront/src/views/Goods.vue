@@ -53,7 +53,7 @@
             <div class="pay-box">
               <span class="goods_price">￥{{ goods.goods_price }}</span>
               <span class="buy-now" @click="buy_now(goods)">立即购买</span>
-              <span class="buy-now">加入购物车</span>
+              <span class="buy-now" @click="add_cart(goods)">加入购物车</span>
             </div>
           </div>
         </div>
@@ -81,11 +81,12 @@ import Footer from '../components/Footer'
 
 export default {
   name: 'mall',
-  data() {
+  data () {
     return {
       category_list: [], // 商品分类列表
       goods_list: [], // 商品列表
       goods_total: 2, // 当前商品的总数量
+      user:1,
       filter: {
         goods_category: 0, // 当前用户选择的商品分类，刚进入页面默认为全部，值为0
         ordering: '-id', // 数据的排序方式，默认值是-id，表示对于id进行降序排列
@@ -201,6 +202,35 @@ export default {
         // console.log(pay_url)
         // 本页面标签调整：可以选择 _self 或 _blank
         open(pay_url, '_self')
+      }).catch(error => {
+        console.log(error.response.data)
+      })
+    },
+    add_cart(goods) {
+      let token = this.$cookies.get('token')
+      if (!token) {
+        this.$message({
+          message: '您还没登录，请登录！'
+        })
+        return false
+      }
+      this.$axios({
+        url: this.$settings.base_url + '/trade/shopcarts/',
+        method: 'post',
+        headers: {
+          Authorization: 'jwt ' + token
+        },
+        data: {
+          goods: goods.id,
+          user: this.user,
+          nums: 1
+        }
+      }).then(response => {
+        // eslint-disable-next-line camelcase
+        let cart_url = response.data
+        console.log(cart_url)
+        // 本页面标签调整：可以选择 _self 或 _blank
+        open('/cart', '_self')
       }).catch(error => {
         console.log(error.response.data)
       })

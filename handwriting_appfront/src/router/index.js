@@ -14,7 +14,7 @@ import handwriting_video_detail from '../views/HandwritingVideoDetail'
 import search from '../views/Search'
 import PaySuccess from '../views/PaySuccess'
 // eslint-disable-next-line no-unused-vars
-import Cart from '../views/Cart';
+import Cart from '../views/Cart'
 
 Vue.use(Router)
 
@@ -60,6 +60,11 @@ export default new Router({
       path: '/pay/success',
       name: 'PaySuccess',
       component: PaySuccess
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: Cart
     }
   ]
 })

@@ -84,7 +84,7 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     # serializer_class = ShopCartSerializer
     # queryset = ShoppingCart.objects.all()
-    lookup_field = "goods_id"
+    lookup_field = ("goods_id")
 
     # def get(self,request,goods_id):
 
