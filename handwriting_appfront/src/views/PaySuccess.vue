@@ -26,48 +26,60 @@ import Header from '@/components/Header'
 
 export default {
   name: 'PaySuccess',
-  data() {
+  data () {
     return {
       result: {}
     }
   },
-  created() {
+  created () {
     // url后拼接的参数：?及后面的所有参数 => ?a=1&b=2
-    console.log(location.search);
+    console.log(location.search)
 
     // 解析支付宝回调的url参数
-    let params = location.search.substring(1);  // 去除? => a=1&b=2
-    let items = params.length ? params.split('&') : [];  // ['a=1', 'b=2']
-    //逐个将每一项添加到args对象中
-    for (let i = 0; i < items.length; i++) {  // 第一次循环a=1，第二次b=2
-      let k_v = items[i].split('=');  // ['a', '1']
-      //解码操作，因为查询字符串经过编码的
+    let params = location.search.substring(1) // 去除? => a=1&b=2
+    let items = params.length ? params.split('&') : [] // ['a=1', 'b=2']
+    // 逐个将每一项添加到args对象中
+    for (let i = 0; i < items.length; i++) { // 第一次循环a=1，第二次b=2
+      let k_v = items[i].split('=') // ['a', '1']
+      // 解码操作，因为查询字符串经过编码的
       if (k_v.length >= 2) {
         // url编码反解
-        let k = decodeURIComponent(k_v[0]);
-        this.result[k] = decodeURIComponent(k_v[1]);
+        let k = decodeURIComponent(k_v[0])
+        this.result[k] = decodeURIComponent(k_v[1])
         // 没有url编码反解
-        this.result[k_v[0]] = k_v[1];
+        this.result[k_v[0]] = k_v[1]
       }
-
     }
     // 解析后的结果
-    console.log(this.result);
+    console.log(this.result)
 
-
+    // get token bug by nick
+    let token = this.$cookies.get('token')
+    if (!token) {
+      this.$message({
+        message: '您还没登录，请登录！'
+      })
+      return false
+    }
     // 把地址栏上面的支付结果，再get请求转发给后端
     this.$axios({
       url: this.$settings.base_url + '/trade/success/' + location.search,
       method: 'get',
+      headers: {
+        'Authorization': 'jwt ' + token
+      }
     }).then(response => {
-      console.log(response.data);
+      console.log(response.data)
+      console.log(this.$cookies.get('token'))
+      console.log(localStorage.getItem('token'))
     }).catch(() => {
-      console.log('支付结果同步失败');
+      console.log('支付结果同步失败')
+      console.log(this.$cookies.get('token'))
+      console.log(localStorage.getItem('token'))
     })
-  }
-  ,
+  },
   components: {
-    Header,
+    Header
   }
 }
 </script>
@@ -106,7 +118,6 @@ export default {
   font-size: 26px;
   color: #000;
 }
-
 
 .info span {
   color: #ec6730;

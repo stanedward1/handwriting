@@ -5,13 +5,15 @@
 # @File    : serializer.py
 # @Software: PyCharm
 from django.conf import settings
+from drf_dynamic_fields import DynamicFieldsMixin
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-
 from goods.models import Goods
+from goods.serializer import GoodsSerializer
 from trade import models
 from trade.models import ShoppingCart
+from user.models import User
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -35,8 +37,8 @@ class OrderSerializer(serializers.ModelSerializer):
         goods_list = attrs.get('goods')
         total_price = 0
         for goods in goods_list:
-            total_price+=goods.goods_price
-        if total_price!=total_amount:
+            total_price += goods.goods_price
+        if total_price != total_amount:
             raise ValidationError('价格不合法')
         return total_amount
 
@@ -45,12 +47,12 @@ class OrderSerializer(serializers.ModelSerializer):
         out_trade_no = self._get_out_trade_no()
         user = self._get_user()
         pay_url = self._get_pay_url(out_trade_no, total_amount, attrs.get('subject'))
-        self._before_create(attrs, user,pay_url)
+        self._before_create(attrs, user, pay_url)
         return attrs
 
     def _get_out_trade_no(self):
         import uuid
-        return str(uuid.uuid4()).replace('-','')
+        return str(uuid.uuid4()).replace('-', '')
 
     def _get_user(self):
         request = self.context.get('request')
@@ -77,22 +79,23 @@ class OrderSerializer(serializers.ModelSerializer):
         goods_list = validated_data.pop('goods')
         order = models.Order.objects.create(**validated_data)
         for goods in goods_list:
-            models.OrderDetail.objects.create(order=order,goods=goods)
+            models.OrderDetail.objects.create(order=order, goods=goods)
         return order
 
 
-class ShopCartSerializer(serializers.Serializer):
-    nums = serializers.IntegerField(required=True,min_value=1,error_messages={
-        "min_value":"商品数量不能小于一",
-        "required":"请选择商品数量"
+class ShopCartSerializer(DynamicFieldsMixin, serializers.Serializer):
+    nums = serializers.IntegerField(required=True, min_value=1, error_messages={
+        "min_value": "商品数量不能小于一",
+        "required": "请选择商品数量"
     })
-    goods = serializers.PrimaryKeyRelatedField(required=True,queryset=Goods.objects.all())
+    goods = serializers.PrimaryKeyRelatedField(required=True, queryset=Goods.objects.all())
+    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
 
     def create(self, validated_data):
         user = self.context["request"].user
         nums = validated_data["nums"]
         goods = validated_data["goods"]
-        existed = ShoppingCart.objects.filter(user=user,goods=goods)
+        existed = ShoppingCart.objects.filter(user=user, goods=goods)
         if existed:
             existed = existed[0]
             existed.nums += nums
@@ -101,3 +104,20 @@ class ShopCartSerializer(serializers.Serializer):
             existed = ShoppingCart.objects.create(**validated_data)
 
         return existed
+
+    def update(self, instance, validated_data):
+        # 修改商品数量
+        instance.nums = validated_data["nums"]
+        instance.save()
+        return instance
+
+
+class ShopCartDetailSerializer(serializers.ModelSerializer):
+    goods = GoodsSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = ShoppingCart
+        fields = ("goods", "nums","user")
+        extra_kwargs = {
+            "goods":{"lookup_field":"goods_id"}
+        }

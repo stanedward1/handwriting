@@ -42,7 +42,7 @@ class Video(BaseModel):
     @property
     def video_section(self):
         ll = []
-        # 根据课程取出所有章节
+        # 根据视频取出所有章节
         video_chapter_list = self.videochapters.all()
         for video_chapter in video_chapter_list:
             video_sections_list = video_chapter.videosections.all()
