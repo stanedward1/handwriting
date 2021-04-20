@@ -1,12 +1,19 @@
+import self as self
 from django.shortcuts import render
-from rest_framework.mixins import CreateModelMixin
+from rest_framework import viewsets
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.viewsets import ViewSet, GenericViewSet
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from libs import tencent_sms
 from . import serializer, models
 from handwritingapi.utils.response import APIResponse
 from rest_framework.decorators import action
+
+from .models import User
+from .serializer import UserSerializer
 from .throttlings import SMSThrotting
 
 
@@ -73,3 +80,18 @@ class RegisterView(GenericViewSet, CreateModelMixin):
         response = super().create(request, *args, **kwargs)
         username = response.data.get('username')
         return APIResponse(code=1, msg='注册成功', username=username)
+
+
+class UserView(viewsets.ModelViewSet):
+    authentication_classes = [JSONWebTokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    queryset = User.objects.filter()
+    serializer_class = serializer.UserSerializer
+    fields = "__all__"
+
+    def get_serializer_class(self):
+        return serializer.UserSerializer
+
+    def get_object(self):
+        print(self.request.user)
+        return self.request.user

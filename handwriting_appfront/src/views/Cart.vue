@@ -5,7 +5,14 @@
     <!--    >{{ item }}</p>-->
     <el-table
       :data="carts_list"
-      style="width: 100%">
+      ref="multipleTable"
+      tooltip-effect="dark"
+      style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -45,6 +52,11 @@
         prop="goods.desc">
       </el-table-column>
     </el-table>
+    <div style="margin-top: 20px">
+      <el-button @click="toggleSelection()">取消选择</el-button>
+      <el-button @click="buy_now()">购买选择的商品</el-button>
+      <br><br>
+    </div>
     <Footer/>
   </div>
 </template>
@@ -78,9 +90,6 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
     get_carts() {
       let token = this.$cookies.get('token')
       if (!token) {
@@ -94,7 +103,6 @@ export default {
         headers: {
           Authorization: 'jwt ' + token
         },
-        // params: filters
       }).then(response => {
         console.log(response.data);
         this.carts_list = response.data
@@ -106,7 +114,7 @@ export default {
         })
       })
     },
-    buy_now(goods) {
+    buy_now() {
       let token = this.$cookies.get('token')
       if (!token) {
         this.$message({
@@ -121,10 +129,10 @@ export default {
           Authorization: 'jwt ' + token
         },
         data: {
-          subject: goods.name,
-          total_amount: goods.goods_price,
+          subject: "test",
+          total_amount: 12,
           pay_type: 1, // 现在只能默认1，为支付宝
-          goods: [goods.id]
+          goods: [1,2]
         }
       }).then(response => {
         // eslint-disable-next-line camelcase
