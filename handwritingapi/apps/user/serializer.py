@@ -19,9 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.User
-        fields = ['username', 'password', 'id']
+        fields = ['username', 'password', 'id', 'icon', 'address']
         extra_kwargs = {
             'id': {'read_only': True},
+            'icon': {'read_only': True},
             'password': {'write_only': True}
         }
 
@@ -100,7 +101,7 @@ class LoginCodeSerializer(serializers.ModelSerializer):
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    code = serializers.CharField(max_length=4, min_length=4,write_only=True)
+    code = serializers.CharField(max_length=4, min_length=4, write_only=True)
 
     class Meta:
         model = models.User
@@ -129,4 +130,3 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = models.User.objects.create_user(**validated_data)
         return user
-

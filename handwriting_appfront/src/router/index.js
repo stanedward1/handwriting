@@ -15,6 +15,7 @@ import search from '../views/Search'
 import PaySuccess from '../views/PaySuccess'
 // eslint-disable-next-line no-unused-vars
 import Cart from '../views/Cart'
+import Pcenter from "../views/Pcenter";
 
 Vue.use(Router)
 
@@ -65,6 +66,11 @@ export default new Router({
       path: '/cart',
       name: 'Cart',
       component: Cart
-    }
+    },
+        {
+      path: '/center',
+      name: 'Center',
+      component: Pcenter
+    },
   ]
 })

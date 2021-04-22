@@ -32,7 +32,9 @@
           <span @click="put_register">注册</span>
         </div>
         <div v-else>
-          <span>{{ username }}</span>
+          <router-link to="/center">
+            <span>{{ username }}</span>
+          </router-link>
           <span class="line">|</span>
           <span @click="logout">注销</span>
         </div>

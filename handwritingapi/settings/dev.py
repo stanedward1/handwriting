@@ -132,11 +132,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 现在的BASE_DIR是api下的
 
 AUTH_USER_MODEL = 'user.user'
 
-REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'handwritingapi.utils.exceptions.common_exception_handler',
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-}
-
 # 真实项目上线后，日志文件打印级别不能过低，因为一次日志记录就是一次文件io操作
 LOGGING = {
     'version': 1,
@@ -228,6 +223,9 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'sms': '3/m',
     },
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'EXCEPTION_HANDLER': 'handwritingapi.utils.exceptions.common_exception_handler',
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',

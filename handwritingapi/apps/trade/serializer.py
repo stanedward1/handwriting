@@ -22,7 +22,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Order
-        fields = ('subject', 'total_amount', 'pay_type', 'goods')
+        fields = "__all__"
         extra_kwargs = {
             'total_amount': {
                 'required': True
