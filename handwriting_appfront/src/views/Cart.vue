@@ -3,59 +3,61 @@
     <Header/>
     <!--    <p v-for="(item,i) in carts_list" :goods="item" :key="item.id"-->
     <!--    >{{ item }}</p>-->
-    <el-table
-      :data="carts_list"
-      ref="multipleTable"
-      tooltip-effect="dark"
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商品名称">
-              <span>{{ props.row.goods.name }}</span>
-            </el-form-item>
-            <el-form-item label="商品 ID">
-              <span>{{ props.row.goods.id }}</span>
-            </el-form-item>
-            <el-form-item label="商品分类">
-              <span>{{ props.row.goods.category.name }}</span>
-            </el-form-item>
-            <el-form-item label="商品描述">
-              <span>{{ props.row.goods.desc }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="商品 ID"
-        prop="goods.id">
-      </el-table-column>
-      <el-table-column
-        label="商品名称"
-        prop="goods.name">
-      </el-table-column>
-      <el-table-column
-        label="商品价格"
-        prop="goods.goods_price">
-      </el-table-column>
-      <el-table-column
-        label="购买数量"
-        prop="nums">
-      </el-table-column>
-      <el-table-column
-        label="描述"
-        prop="goods.desc">
-      </el-table-column>
-    </el-table>
-    <div style="margin-top: 20px">
-      <el-button @click="toggleSelection()">取消选择</el-button>
-      <el-button @click="buy_now()">购买选择的商品</el-button>
-      <br><br>
+    <div class="main">
+      <el-table
+        :data="carts_list"
+        ref="multipleTable"
+        tooltip-effect="dark"
+        style="width: 100%"
+        @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item label="商品名称">
+                <span>{{ props.row.goods.name }}</span>
+              </el-form-item>
+              <el-form-item label="商品 ID">
+                <span>{{ props.row.goods.id }}</span>
+              </el-form-item>
+              <el-form-item label="商品分类">
+                <span>{{ props.row.goods.category.name }}</span>
+              </el-form-item>
+              <el-form-item label="商品描述">
+                <span>{{ props.row.goods.desc }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="商品 ID"
+          prop="goods.id">
+        </el-table-column>
+        <el-table-column
+          label="商品名称"
+          prop="goods.name">
+        </el-table-column>
+        <el-table-column
+          label="商品价格"
+          prop="goods.goods_price">
+        </el-table-column>
+        <el-table-column
+          label="购买数量"
+          prop="nums">
+        </el-table-column>
+        <el-table-column
+          label="描述"
+          prop="goods.desc">
+        </el-table-column>
+      </el-table>
+      <div style="margin-top: 20px">
+        <el-button @click="toggleSelection()">取消选择</el-button>
+        <el-button @click="buy_now()">购买选择的商品</el-button>
+        <br><br>
+      </div>
     </div>
     <Footer/>
   </div>
@@ -132,7 +134,7 @@ export default {
           subject: "test",
           total_amount: 12,
           pay_type: 1, // 现在只能默认1，为支付宝
-          goods: [1,2]
+          goods: [1, 2]
         }
       }).then(response => {
         // eslint-disable-next-line camelcase
@@ -149,6 +151,11 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  width: 1100px;
+  margin: 35px auto 0;
+}
+
 .demo-table-expand {
   font-size: 0;
   text-align: center;

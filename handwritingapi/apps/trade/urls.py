@@ -12,6 +12,7 @@ from trade import views
 router = SimpleRouter()
 router.register('pay', views.PayViewSet, basename='pay')
 router.register('shopcarts',views.ShoppingCartViewSet,basename='shopcarts'),
+router.register('order',views.OrderViewSet,basename='order')
 
 urlpatterns = [
     path('', include(router.urls)),

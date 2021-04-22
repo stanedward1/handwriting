@@ -83,16 +83,21 @@ class RegisterView(GenericViewSet, CreateModelMixin):
         return APIResponse(code=1, msg='注册成功', username=username)
 
 
-class UserView(viewsets.ModelViewSet, mixins.RetrieveModelMixin):
+class UserView(viewsets.ModelViewSet, mixins.RetrieveModelMixin,mixins.UpdateModelMixin):
     authentication_classes = [JSONWebTokenAuthentication]
     # permission_classes = [IsAuthenticated]
-    # queryset = User.objects.filter()
-    # serializer_class = serializer.UserSerializer
-    lookup_field = "__all__"
+    queryset = User.objects.filter()
+    # serializer_class = serializer.UserRegisterSerializer
 
     def get_serializer_class(self):
         return serializer.UserSerializer
 
     def get_queryset(self):
+        print("打印当前用户：")
+        user = User.objects.filter(username=self.request.user)
         print(self.request.user)
-        return User.objects.filter(username=self.request.user)
+        user = self.request.user
+        if user.is_authenticated:
+            return User.objects.filter(username=self.request.user)
+        else:
+            raise Exception('I am said to be authenticated, but I really am not.')

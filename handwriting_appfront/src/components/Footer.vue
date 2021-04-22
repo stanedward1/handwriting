@@ -8,7 +8,7 @@
             <li>意见反馈</li>
             <li>新手指南</li>
         </ul>
-        <p>Copyright © https://github.com/stanedward1版权所有</p>
+      <p>Copyright © <a href="https://github.com/stanedward1" style="color: #eeeeee">https://github.com/stanedward1</a>版权所有</p>
     </div>
 </template>
 
