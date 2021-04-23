@@ -14,7 +14,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 
 class GoodsListViewSet(GenericViewSet, ListModelMixin,RetrieveModelMixin):
     """
-    商品列表页,分页，搜索，过滤，排序！！！
+    商品列表页，搜索，过滤，排序！！！
     """
     queryset = models.Goods.objects.filter(is_delete=False, is_show=True).order_by('orders')
     serializer_class = GoodsSerializer
@@ -31,9 +31,13 @@ class CategoryViewset(GenericViewSet, ListModelMixin):
     """
     queryset = models.GoodsCategory.objects.order_by('id')
     serializer_class = serializer.CategorySerializer
+    fields="__all__"
 
 
 class GoodsSearchView(GenericViewSet, ListModelMixin):
+    """
+    搜索接口
+    """
     queryset = models.Goods.objects.filter(is_delete=False, is_show=True)
     serializer_class = serializer.GoodsSerializer
     pagination_class = PageNumberPagination

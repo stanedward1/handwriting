@@ -11,12 +11,20 @@ from .paginations import PageNumberPagination
 
 
 class VideoCategoryView(GenericViewSet, ListModelMixin):
+    """
+    视频分类信息
+    """
     queryset = models.VideoCategory.objects.filter(is_delete=False, is_show=True).order_by('orders')
     serializer_class = serializer.VideoCategorySerializer
     fields = '__all__'
 
 
 class VideoView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
+    """
+    list----所有视频信息
+
+    read----根据id获取视频信息
+    """
     queryset = models.Video.objects.filter(is_delete=False, is_show=True).order_by('orders')
     serializer_class = serializer.VideoModelSerializer
     pagination_class = PageNumberPagination
@@ -28,6 +36,9 @@ class VideoView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
 
 
 class VideoChapterView(GenericViewSet, ListModelMixin):
+    """
+    视频的章节信息
+    """
     queryset = models.VideoChapter.objects.filter(is_delete=False, is_show=True)
     serializer_class = serializer.VideoChapterSerializer
     filter_backends = [DjangoFilterBackend]
@@ -35,6 +46,9 @@ class VideoChapterView(GenericViewSet, ListModelMixin):
 
 
 class VideoSearchView(GenericViewSet, ListModelMixin):
+    """
+    视频的搜索功能
+    """
     queryset = models.Video.objects.filter(is_delete=False, is_show=True)
     serializer_class = serializer.VideoModelSerializer
     pagination_class = PageNumberPagination
