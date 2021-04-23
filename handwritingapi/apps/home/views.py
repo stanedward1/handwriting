@@ -8,6 +8,9 @@ from rest_framework.response import Response
 
 
 class BannerView(GenericViewSet, ListModelMixin):
+    """
+    显示轮播图的接口
+    """
     queryset = models.Banner.objects.filter(is_delete=False, is_show=True).order_by('orders')[
                :settings.BANNER_COUNTER]
     serializer_class = serializer.BannerModelSerializer

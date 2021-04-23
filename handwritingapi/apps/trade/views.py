@@ -18,6 +18,9 @@ from .serializer import ShopCartSerializer, ShopCartDetailSerializer, OrderSeria
 
 
 class PayViewSet(GenericViewSet, CreateModelMixin):
+    """
+    支付宝支付
+    """
     authentication_classes = [JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = models.Order.objects.all()
@@ -39,8 +42,10 @@ class SuccessViewSet(ViewSet):
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     # permission_classes = [IsAuthenticated]
 
-    # 支付宝同步回调给前台，在同步通知给后台处理
     def get(self, request, *args, **kwargs):
+        """
+        支付宝同步回调给前台，在同步通知给后台处理
+        """
         out_trade_no = request.query_params.get('out_trade_no')
         order = models.Order.objects.filter(out_trade_no=out_trade_no).first()
         #bug by nick
@@ -50,8 +55,10 @@ class SuccessViewSet(ViewSet):
             return Response(False)
 
 
-    # 支付宝异步回调处理
     def post(self, request, *args, **kwargs):
+        """
+        支付宝异步回调处理
+        """
         try:
             result_data = request.data.dict()
             out_trade_no = result_data.get('out_trade_no')
@@ -73,12 +80,25 @@ class SuccessViewSet(ViewSet):
 class ShoppingCartViewSet(viewsets.ModelViewSet):
     """
     购物车功能
+
     list
         获取购物车详情
+
     create
-        假如购物车
+        加入购物车
+
+    read
+        获取购物车信息
+
+    update
+        更新购物车信息
+
+    partial_update
+        批量更新购物车信息
+
     delete
         删除购物车记录
+
     """
     authentication_classes = [JSONWebTokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -98,6 +118,20 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
         return ShoppingCart.objects.filter(user=self.request.user)
 
 class OrderViewSet(viewsets.ModelViewSet):
+    """
+    list----打印所有订单
+
+    create-----生成新订单
+
+    read----根据订单id打印订单
+
+    update----更新订单
+
+    partial_update----批量更新订单
+
+    delete----删除订单
+
+    """
     authentication_classes = [JSONWebTokenAuthentication]
     # permission_classes = [IsAuthenticated]
     serializer_class = serializer.OrderSerializer
