@@ -5,8 +5,6 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from goods import filters, models, serializer
-from goods.filters import GoodsFilter
-from goods.models import Goods, GoodsCategory
 from goods.paginations import PageNumberPagination
 from goods.serializer import GoodsSerializer, CategorySerializer
 from rest_framework.filters import OrderingFilter, SearchFilter

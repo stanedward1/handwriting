@@ -1,8 +1,6 @@
 <template>
   <div class="mall">
     <Header/>
-    <!--    <p v-for="(item,i) in carts_list" :goods="item" :key="item.id"-->
-    <!--    >{{ item }}</p>-->
     <div class="main">
       <el-table
         :data="carts_list"

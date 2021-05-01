@@ -6,7 +6,6 @@
 # @Software: PyCharm
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-
 from user import views
 
 router = SimpleRouter()

@@ -4,7 +4,7 @@ from utils.models import BaseModel
 
 class Goods(BaseModel):
     name = models.CharField(max_length=30, verbose_name="商品名")
-    category = models.ForeignKey("GoodsCategory",on_delete=models.SET_NULL,db_constraint=False,null=True,blank=True,verbose_name="商品类别")
+    category = models.ForeignKey("GoodsCategory", on_delete=models.CASCADE, verbose_name=u"商品类别")
     goods_img = models.ImageField(upload_to="goods", max_length=255, verbose_name="商品图片", blank=True, null=True)
     detail_img = models.ImageField(upload_to="goods_detals", max_length=255, verbose_name="商品详情介绍图片", blank=True, null=True)
     desc = models.TextField(verbose_name="商品描述", help_text="商品描述")

@@ -38,7 +38,7 @@
           </div>
           <div class="video-info">
             <h3>
-              <router-link :to="'/video/detail/'+video.id">{{ video.name }}</router-link>
+              <router-link :to="'/culturevideo/detail/'+video.id">{{ video.name }}</router-link>
               <span><img src="@/assets/img/icon.svg" alt="">{{ video.students }}人已加入学习</span></h3>
             <p class="organization-info">
               {{ video.organization.name }} {{ video.organization.title }} &nbsp;&nbsp;&nbsp;
@@ -127,7 +127,7 @@ export default {
     },
     get_category() {
       // 获取视频分类信息
-      this.$axios.get(`${this.$settings.base_url}/video/categories/`).then(response => {
+      this.$axios.get(`${this.$settings.base_url}/culturevideo/culturevideocategories/`).then(response => {
         this.category_list = response.data
       }).catch(() => {
         this.$message({
@@ -160,7 +160,7 @@ export default {
       }
 
       // 获取视频列表信息
-      this.$axios.get(`${this.$settings.base_url}/video/video/`, {
+      this.$axios.get(`${this.$settings.base_url}/culturevideo/culturevideo/`, {
         params: filters
       }).then(response => {
         // console.log(response.data);
