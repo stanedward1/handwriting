@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'user',
     'home',
     'video',
+    'culturevideo',
     'goods',
     'trade',
 ]
@@ -87,7 +88,11 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'longbiu',
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '3306',
+        # 取消外键约束
+        'OPTIONS': {
+            "init_command": "SET foreign_key_checks = 0;",
+        }
     }
 }
 
@@ -249,9 +254,9 @@ CACHES = {
 # 后台基URL
 BASE_URL = 'http://127.0.0.1:8000'
 # 前台基URL
-HAND_URL = 'http://127.0.0.1:8081'
+HAND_URL = 'http://127.0.0.1:8080'
 # 支付宝同步异步回调接口配置
 # 后台异步回调接口
-NOTIFY_URL = BASE_URL + "/trade/success/"
+NOTIFY_URL = BASE_URL + "/v1/api/trade/success/"
 # 前台同步回调接口，没有 / 结尾
 RETURN_URL = HAND_URL + "/pay/success"

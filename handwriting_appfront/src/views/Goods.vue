@@ -194,6 +194,7 @@ export default {
           subject: goods.name,
           total_amount: goods.goods_price,
           pay_type: 1, // 现在只能默认1，为支付宝
+          user: this.user,
           goods: [goods.id]
         }
       }).then(response => {

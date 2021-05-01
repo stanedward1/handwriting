@@ -10,6 +10,7 @@ urlpatterns = [
     path('v1/api/home/', include('home.urls')),
     path('v1/api/user/', include('user.urls')),
     path('v1/api/video/', include('video.urls')),
+    path('v1/api/culturevideo/', include('culturevideo.urls')),
     path('v1/api/goods/', include('goods.urls')),
     path('v1/api/trade/', include('trade.urls')),
     path('v1/api/docs/', include_docs_urls(title='handwriting project')),

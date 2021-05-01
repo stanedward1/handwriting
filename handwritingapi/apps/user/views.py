@@ -1,4 +1,3 @@
-import self as self
 from django.shortcuts import render
 from rest_framework import viewsets, mixins
 from rest_framework.mixins import CreateModelMixin, ListModelMixin

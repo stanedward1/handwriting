@@ -10,7 +10,7 @@ from home import models
 
 
 class BannerModelSerializer(serializers.ModelSerializer):
-    ""
+    "首页的轮播图"
     class Meta:
         model = models.Banner
         fields = ['name', 'link', 'img']

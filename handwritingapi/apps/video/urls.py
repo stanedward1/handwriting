@@ -12,6 +12,7 @@ from video import views
 router = SimpleRouter()
 router.register('categories', views.VideoCategoryView, basename='categories')
 router.register('video', views.VideoView, basename='video')
+# router.register('culturevideo', views.CultureVideoView, basename='video')
 router.register('videochapter', views.VideoChapterView, basename='videochapter')
 router.register('search',views.VideoSearchView,basename='search')
 

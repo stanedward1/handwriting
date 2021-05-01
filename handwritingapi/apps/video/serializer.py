@@ -28,6 +28,14 @@ class VideoModelSerializer(serializers.ModelSerializer):
         model = models.Video
         fields = ['id', 'name', 'video_img', 'students', 'attachment_path', 'brief',
                   'sections', 'video_section', 'organization', 'updated_time']
+#
+# class CultureVideoModelSerializer(serializers.ModelSerializer):
+#     organization = OrganizationSerializer()
+#
+#     class Meta:
+#         model = models.CultureVideo
+#         fields = ['id', 'name', 'video_img', 'students', 'attachment_path', 'brief',
+#                   'sections', 'video_section', 'organization', 'updated_time']
 
 
 class VideoSectionSerializer(serializers.ModelSerializer):

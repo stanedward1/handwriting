@@ -17,13 +17,14 @@
         <span>立即评论</span>
       </div>
     </div>
+    <Footer/>
   </div>
 </template>
 
 <script>
 // eslint-disable-next-line no-unused-vars
 import Header from '@/components/Header'
-
+import Footer from '../components/Footer'
 export default {
   name: 'PaySuccess',
   data () {
@@ -79,7 +80,8 @@ export default {
     })
   },
   components: {
-    Header
+    Header,
+    Footer,
   }
 }
 </script>

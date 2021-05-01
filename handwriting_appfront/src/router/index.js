@@ -5,6 +5,7 @@ import Home from '../views/Home'
 import handwriting_video from '../views/HandwritingVideo'
 // eslint-disable-next-line camelcase
 import culture_video from '../views/CultureVideo'
+import culture_video_detail from "../views/CultureVideoDetail";
 // eslint-disable-next-line no-unused-vars
 import Goods from '../views/Goods'
 import GoodsDetail from '../views/GoodsDetail'
@@ -41,6 +42,11 @@ export default new Router({
       path: '/culture_video',
       name: 'culture_video',
       component: culture_video
+    },
+        {
+      path: '/culturevideo/detail/:id',
+      name: 'culture_video_detail',
+      component: culture_video_detail
     },
     {
       path: '/mall',
