@@ -185,6 +185,7 @@ export default {
         return false
       }
       this.$axios({
+        
         url: this.$settings.base_url + '/trade/pay/',
         method: 'post',
         headers: {

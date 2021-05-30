@@ -53,7 +53,7 @@
       </el-table>
       <div style="margin-top: 20px">
         <el-button @click="toggleSelection()">取消选择</el-button>
-        <el-button @click="buy_now()">购买选择的商品</el-button>
+        <el-button @click="buy_now(goods)">购买选择的商品</el-button>
         <br><br>
       </div>
     </div>
@@ -114,7 +114,7 @@ export default {
         })
       })
     },
-    buy_now() {
+    buy_now(goods) {
       let token = this.$cookies.get('token')
       if (!token) {
         this.$message({

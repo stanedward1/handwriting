@@ -258,5 +258,8 @@ HAND_URL = 'http://127.0.0.1:8080'
 # 支付宝同步异步回调接口配置
 # 后台异步回调接口
 NOTIFY_URL = BASE_URL + "/v1/api/trade/success/"
-# 前台同步回调接口，没有 / 结尾
-RETURN_URL = HAND_URL + "/pay/success"
+# 前台同步回调接口
+RETURN_URL = HAND_URL + "/pay/success/"
+
+# SimpleUI的设置————去掉Simpleui的logo
+SIMPLEUI_HOME_INFO = False
