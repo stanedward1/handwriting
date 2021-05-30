@@ -118,7 +118,7 @@ export default {
     },
     onPlayerPause () {
       // 当视频暂停播放时，执行的方法
-      console.log('视频暂停，可以打开广告了')
+      console.log('视频暂停')
     },
     get_video_id () {
       // 获取地址栏上面的视频ID

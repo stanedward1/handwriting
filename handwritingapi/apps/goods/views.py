@@ -24,8 +24,7 @@ class GoodsListViewSet(GenericViewSet, ListModelMixin,RetrieveModelMixin):
 
 class CategoryViewset(GenericViewSet, ListModelMixin):
     """
-    List:
-        商品分类列表数据
+    商品分类列表数据
     """
     queryset = models.GoodsCategory.objects.order_by('id')
     serializer_class = serializer.CategorySerializer
