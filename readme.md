@@ -18,3 +18,6 @@
 # 如何使用
 
 # License
+[Apache License 2.0](LICENSE)
+
+Copyright (c) 2019-2022 stanedward1
