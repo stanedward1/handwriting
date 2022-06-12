@@ -12,6 +12,8 @@
 | Vue           | 一套用于构建用户界面的渐进式框架       | https://cn.vuejs.org/v2/guide/ |
 | 腾讯云短信服务       | 腾讯云短信SDK（Python）       | https://github.com/TencentCloud/tencentcloud-sdk-python |
 | simpleui| django admin现代化主题                       | https://github.com/newpanjing/simpleui       |
+|Element|    前端UI框架|    https://element.eleme.io|
+|Axios |    前端HTTP框架 |    https://github.com/axios/axios|
 
 # 如何使用
 
