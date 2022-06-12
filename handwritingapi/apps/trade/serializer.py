@@ -17,7 +17,7 @@ from user.models import User
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    # 要支持单购物和群购物(购物车)，前台要提交 课程主键(们)
+    # 要支持单购物和群购物(购物车)，前台要提交对应信息
     goods = serializers.PrimaryKeyRelatedField(queryset=Goods.objects.all(), write_only=True, many=True)
 
     class Meta:

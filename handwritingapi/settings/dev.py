@@ -263,3 +263,6 @@ RETURN_URL = HAND_URL + "/pay/success/"
 
 # SimpleUI的设置————去掉Simpleui的logo
 SIMPLEUI_HOME_INFO = False
+
+# 用以解决warning：在 Django 中未定义主键类型警告时使用的自动创建主键
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

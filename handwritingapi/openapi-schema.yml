@@ -1,0 +1,991 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /home/banner/:
+    get:
+      operationId: listBanners
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BannerModel'
+          description: ''
+      tags:
+      - home
+  /user/check_telephone/:
+    get:
+      operationId: checkTelephoneLogin
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - user
+  /user/send/:
+    get:
+      operationId: sendSendSmS
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - user
+  /video/categories/:
+    get:
+      operationId: listVideoCategorys
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoCategory'
+          description: ''
+      tags:
+      - video
+  /video/video/:
+    get:
+      operationId: listVideos
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: video_category
+        required: false
+        in: query
+        description: video_category
+        schema:
+          type: string
+      - name: students
+        required: false
+        in: query
+        description: students
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VideoModel'
+          description: ''
+      tags:
+      - video
+  /video/video/{id}/:
+    get:
+      operationId: retrieveVideo
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u89C6\u9891."
+        schema:
+          type: string
+      - name: video_category
+        required: false
+        in: query
+        description: video_category
+        schema:
+          type: string
+      - name: students
+        required: false
+        in: query
+        description: students
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoModel'
+          description: ''
+      tags:
+      - video
+  /video/videochapter/:
+    get:
+      operationId: listVideoChapters
+      description: ''
+      parameters:
+      - name: video
+        required: false
+        in: query
+        description: video
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoChapter'
+          description: ''
+      tags:
+      - video
+  /video/search/:
+    get:
+      operationId: listVideos
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VideoModel'
+          description: ''
+      tags:
+      - video
+  /goods/goods/:
+    get:
+      operationId: listGoods
+      description: "\u5546\u54C1\u5217\u8868\u9875,\u5206\u9875\uFF0C\u641C\u7D22\uFF0C\
+        \u8FC7\u6EE4\uFF0C\u6392\u5E8F\uFF01\uFF01\uFF01"
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: name
+        required: false
+        in: query
+        description: name
+        schema:
+          type: string
+      - name: desc
+        required: false
+        in: query
+        description: desc
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Goods'
+          description: ''
+      tags:
+      - goods
+  /goods/goods/{id}/:
+    get:
+      operationId: retrieveGoods
+      description: "\u5546\u54C1\u5217\u8868\u9875,\u5206\u9875\uFF0C\u641C\u7D22\uFF0C\
+        \u8FC7\u6EE4\uFF0C\u6392\u5E8F\uFF01\uFF01\uFF01"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u5546\u54C1\u4FE1\u606F\
+          ."
+        schema:
+          type: string
+      - name: name
+        required: false
+        in: query
+        description: name
+        schema:
+          type: string
+      - name: desc
+        required: false
+        in: query
+        description: desc
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goods'
+          description: ''
+      tags:
+      - goods
+  /goods/categories/:
+    get:
+      operationId: listGoodsCategorys
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+      tags:
+      - goods
+  /goods/search/:
+    get:
+      operationId: listGoods
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Goods'
+          description: ''
+      tags:
+      - goods
+  /trade/shopcarts/:
+    get:
+      operationId: listShoppingCarts
+      description: "\u8D2D\u7269\u8F66\u529F\u80FD\nlist\n    \u83B7\u53D6\u8D2D\u7269\
+        \u8F66\u8BE6\u60C5\ncreate\n    \u5047\u5982\u8D2D\u7269\u8F66\ndelete\n \
+        \   \u5220\u9664\u8D2D\u7269\u8F66\u8BB0\u5F55"
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShopCart'
+          description: ''
+      tags:
+      - trade
+    post:
+      operationId: createShoppingCart
+      description: "\u8D2D\u7269\u8F66\u529F\u80FD\nlist\n    \u83B7\u53D6\u8D2D\u7269\
+        \u8F66\u8BE6\u60C5\ncreate\n    \u5047\u5982\u8D2D\u7269\u8F66\ndelete\n \
+        \   \u5220\u9664\u8D2D\u7269\u8F66\u8BB0\u5F55"
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopCart'
+          description: ''
+      tags:
+      - trade
+  /trade/shopcarts/{id}/:
+    get:
+      operationId: retrieveShoppingCart
+      description: "\u8D2D\u7269\u8F66\u529F\u80FD\nlist\n    \u83B7\u53D6\u8D2D\u7269\
+        \u8F66\u8BE6\u60C5\ncreate\n    \u5047\u5982\u8D2D\u7269\u8F66\ndelete\n \
+        \   \u5220\u9664\u8D2D\u7269\u8F66\u8BB0\u5F55"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u8D2D\u7269\u8F66."
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopCart'
+          description: ''
+      tags:
+      - trade
+    put:
+      operationId: updateShoppingCart
+      description: "\u8D2D\u7269\u8F66\u529F\u80FD\nlist\n    \u83B7\u53D6\u8D2D\u7269\
+        \u8F66\u8BE6\u60C5\ncreate\n    \u5047\u5982\u8D2D\u7269\u8F66\ndelete\n \
+        \   \u5220\u9664\u8D2D\u7269\u8F66\u8BB0\u5F55"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u8D2D\u7269\u8F66."
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopCart'
+          description: ''
+      tags:
+      - trade
+    patch:
+      operationId: partialUpdateShoppingCart
+      description: "\u8D2D\u7269\u8F66\u529F\u80FD\nlist\n    \u83B7\u53D6\u8D2D\u7269\
+        \u8F66\u8BE6\u60C5\ncreate\n    \u5047\u5982\u8D2D\u7269\u8F66\ndelete\n \
+        \   \u5220\u9664\u8D2D\u7269\u8F66\u8BB0\u5F55"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u8D2D\u7269\u8F66."
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopCart'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopCart'
+          description: ''
+      tags:
+      - trade
+    delete:
+      operationId: destroyShoppingCart
+      description: "\u8D2D\u7269\u8F66\u529F\u80FD\nlist\n    \u83B7\u53D6\u8D2D\u7269\
+        \u8F66\u8BE6\u60C5\ncreate\n    \u5047\u5982\u8D2D\u7269\u8F66\ndelete\n \
+        \   \u5220\u9664\u8D2D\u7269\u8F66\u8BB0\u5F55"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: "A unique integer value identifying this \u8D2D\u7269\u8F66."
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - trade
+  /trade/success/:
+    get:
+      operationId: retrieveSuccessViewSet
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - trade
+    post:
+      operationId: createSuccessViewSet
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - trade
+  /user/code_login/:
+    post:
+      operationId: codeLoginLogin
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - user
+  /user/login/:
+    post:
+      operationId: login
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - user
+  /user/register/:
+    post:
+      operationId: createUser
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegister'
+          description: ''
+      tags:
+      - user
+  /trade/pay/:
+    post:
+      operationId: createOrder
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+      tags:
+      - trade
+components:
+  schemas:
+    BannerModel:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 32
+        link:
+          type: string
+          maxLength: 32
+        img:
+          type: string
+          format: binary
+          nullable: true
+          description: "\u56FE\u7247\u5C3A\u5BF8\u5FC5\u987B\u662F\uFF1A3840*800"
+      required:
+      - name
+      - link
+    VideoCategory:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+      required:
+      - name
+    VideoModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        video_img:
+          type: string
+          format: binary
+          nullable: true
+        students:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        attachment_path:
+          type: string
+          format: binary
+          nullable: true
+        brief:
+          type: string
+          nullable: true
+          maxLength: 2048
+        sections:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        video_section:
+          type: string
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            name:
+              type: string
+              maxLength: 32
+            signature:
+              type: string
+              nullable: true
+              description: "\u673A\u6784\u6216\u4E2A\u4EBA\u7B7E\u540D"
+              maxLength: 255
+            image:
+              type: string
+              format: binary
+              nullable: true
+          required:
+          - name
+        updated_time:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+      - organization
+    VideoChapter:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 128
+        chapter:
+          type: integer
+          maximum: 32767
+          minimum: -32768
+        summary:
+          type: string
+          nullable: true
+        pub_date:
+          type: string
+          format: date
+          readOnly: true
+        videosections:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 128
+              orders:
+                type: integer
+                maximum: 65535
+                minimum: 0
+              duration:
+                type: string
+                nullable: true
+                maxLength: 32
+              pub_date:
+                type: string
+                format: date-time
+                readOnly: true
+              section_link:
+                type: string
+                nullable: true
+                description: "\u82E5\u662Fvideo\uFF0C\u586Bvid,\u82E5\u662F\u6587\u6863\
+                  \uFF0C\u586Blink"
+                maxLength: 255
+              section_type_name:
+                type: string
+                readOnly: true
+            required:
+            - name
+            - orders
+      required:
+      - name
+      - videosections
+    Goods:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            created_time:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_time:
+              type: string
+              format: date-time
+              readOnly: true
+            is_delete:
+              type: boolean
+            is_show:
+              type: boolean
+            orders:
+              type: integer
+              maximum: 2147483647
+              minimum: -2147483648
+            name:
+              type: string
+              maxLength: 30
+            desc:
+              type: string
+              description: "\u7C7B\u522B\u63CF\u8FF0"
+          required:
+          - orders
+        created_time:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_time:
+          type: string
+          format: date-time
+          readOnly: true
+        is_delete:
+          type: boolean
+        is_show:
+          type: boolean
+        orders:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        name:
+          type: string
+          maxLength: 30
+        goods_img:
+          type: string
+          format: binary
+          nullable: true
+        detail_img:
+          type: string
+          format: binary
+          nullable: true
+        desc:
+          type: string
+          description: "\u5546\u54C1\u63CF\u8FF0"
+        click_num:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        sold_num:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        fav_num:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        goods_num:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        goods_price:
+          type: number
+        ship_free:
+          type: boolean
+      required:
+      - category
+      - orders
+      - name
+      - desc
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_time:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_time:
+          type: string
+          format: date-time
+          readOnly: true
+        is_delete:
+          type: boolean
+        is_show:
+          type: boolean
+        orders:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        name:
+          type: string
+          maxLength: 30
+        desc:
+          type: string
+          description: "\u7C7B\u522B\u63CF\u8FF0"
+      required:
+      - orders
+    ShopCart:
+      type: object
+      properties:
+        nums:
+          type: integer
+          minimum: 1
+        goods:
+          type: integer
+      required:
+      - nums
+      - goods
+    UserRegister:
+      type: object
+      properties:
+        telephone:
+          type: string
+          maxLength: 11
+        code:
+          type: string
+          writeOnly: true
+          maxLength: 4
+          minLength: 4
+        password:
+          type: string
+          maxLength: 18
+          minLength: 8
+      required:
+      - telephone
+      - code
+      - password
+    Order:
+      type: object
+      properties:
+        subject:
+          type: string
+          maxLength: 150
+        total_amount:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 100000000
+          minimum: -100000000
+        pay_type:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: -32768
+          maximum: 32767
+        goods:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+      required:
+      - subject
+      - total_amount
+      - pay_type
+      - goods
