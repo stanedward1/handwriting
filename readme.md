@@ -9,6 +9,7 @@
 | 技术            | Description            |官网|
 |---------------|------------------------| ------ |
 | Django REST framework | Django REST 框架是用于构建 Web API 的强大而灵活的工具包 | https://www.django-rest-framework.org/ |
+| Celery        | 分布式任务队列 | https://github.com/celery/celery |
 | Vue           | 一套用于构建用户界面的渐进式框架       | https://cn.vuejs.org/v2/guide/ |
 | 腾讯云短信服务       | 腾讯云短信SDK（Python）       | https://github.com/TencentCloud/tencentcloud-sdk-python |
 | simpleui| django admin现代化主题                       | https://github.com/newpanjing/simpleui       |
